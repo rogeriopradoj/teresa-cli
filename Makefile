@@ -1,2 +1,5 @@
+all:
+	@go build -o teresa
+
 test:
-	make -C cli test
+	@go test -v ./cmd

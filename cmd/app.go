@@ -20,7 +20,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/luizalabs/teresa/api/models"
+	"github.com/luizalabs/tapi/models"
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 )
