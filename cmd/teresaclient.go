@@ -233,7 +233,7 @@ func (tc TeresaClient) GetTeams() (teamsList []*models.Team, err error) {
 }
 
 // CreateDeploy creates a new deploy
-func (tc TeresaClient) CreateDeploy(teamID, appID int64, description string, tarBall *os.File) (deploy *models.Deployment, err error) {
+func (tc TeresaClient) CreateDeploy(teamID, appID int64, description string, tarBall *os.File) (deploy *models.App, err error) {
 	p := deployments.NewCreateDeploymentParams()
 	p.TeamID = teamID
 	p.AppID = appID
