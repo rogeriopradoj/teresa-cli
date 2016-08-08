@@ -1,7 +1,10 @@
 {
 	"ImportPath": "github.com/luizalabs/tcli",
 	"GoVersion": "go1.6",
-	"GodepVersion": "v74",
+	"GodepVersion": "v62",
+	"Packages": [
+		"./..."
+	],
 	"Deps": [
 		{
 			"ImportPath": "github.com/BurntSushi/toml",
@@ -10,8 +13,12 @@
 		},
 		{
 			"ImportPath": "github.com/PuerkitoBio/purell",
-			"Comment": "v0.1.0-23-gd69616f",
-			"Rev": "d69616f51cdfcd7514d6a380847a152dfc2a749d"
+			"Comment": "v1.0.0",
+			"Rev": "8a290539e2e8629dbc4e6bad948158f790ec31f4"
+		},
+		{
+			"ImportPath": "github.com/PuerkitoBio/urlesc",
+			"Rev": "5bd2802263f21d8788851d5305584c82a5c75d7e"
 		},
 		{
 			"ImportPath": "github.com/Sirupsen/logrus",
@@ -20,8 +27,8 @@
 		},
 		{
 			"ImportPath": "github.com/asaskevich/govalidator",
-			"Comment": "v4-2-g68c9ffa",
-			"Rev": "68c9ffa338c6d71d29c643a61862909d2db75b28"
+			"Comment": "v4-12-g593d645",
+			"Rev": "593d64559f7600f29581a3ee42177f5dbded27a9"
 		},
 		{
 			"ImportPath": "github.com/briandowns/spinner",
@@ -39,23 +46,23 @@
 		},
 		{
 			"ImportPath": "github.com/go-openapi/analysis",
-			"Rev": "5a8fe2138f95138797c306c07e65e759c55f898f"
+			"Rev": "abc9a6171f5bf03ada39aead1aa7fd7bbd44d50f"
 		},
 		{
 			"ImportPath": "github.com/go-openapi/errors",
-			"Rev": "8a4ac38004d8cdb96dac7bece88034dd3d94493f"
+			"Rev": "d24ebc2075bad502fac3a8ae27aa6dd58e1952dc"
 		},
 		{
 			"ImportPath": "github.com/go-openapi/jsonpointer",
-			"Rev": "f5133566e18f23f2085d953998fd72959b698623"
+			"Rev": "46af16f9f7b149af66e5d1bd010e3574dc06de98"
 		},
 		{
 			"ImportPath": "github.com/go-openapi/jsonreference",
-			"Rev": "44d0c05f81b60f99eeb8c188b8983ec82e5d872f"
+			"Rev": "13c6e3589ad90f49bd3e3bbe2c2cb3d7a4142272"
 		},
 		{
 			"ImportPath": "github.com/go-openapi/loads",
-			"Rev": "3a4490f96e6ea1ba7d66602e70ffca0fc26aa6ca"
+			"Rev": "18441dfa706d924a39a030ee2c3b1d8d81917b38"
 		},
 		{
 			"ImportPath": "github.com/go-openapi/runtime",
@@ -67,19 +74,19 @@
 		},
 		{
 			"ImportPath": "github.com/go-openapi/spec",
-			"Rev": "1f40fcb077ed32379da3eeb494f76fb2285e31b8"
+			"Rev": "6aced65f8501fe1217321abf0749d354824ba2ff"
 		},
 		{
 			"ImportPath": "github.com/go-openapi/strfmt",
-			"Rev": "66a99d45c3043d45d346b1c8db5dc2f76a004869"
+			"Rev": "dfda818c47a4ae5a1dde75ac776f34b2c95de993"
 		},
 		{
 			"ImportPath": "github.com/go-openapi/swag",
-			"Rev": "f8ab07bb33bb43a743eb65daf0588ab522e5160f"
+			"Rev": "1d0bd113de87027671077d3c71eb3ac5d7dbba72"
 		},
 		{
 			"ImportPath": "github.com/go-openapi/validate",
-			"Rev": "f9db1b89d08ead629cde1e6cab275c329fe89bed"
+			"Rev": "deaf2c9013bc1a7f4c774662259a506ba874d80f"
 		},
 		{
 			"ImportPath": "github.com/hashicorp/hcl",
@@ -131,43 +138,55 @@
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/client",
-			"Comment": "v0.1.0-8-gc35f01a",
-			"Rev": "c35f01a3f2337b5f98ecf37e03faf3dc99e05cbc"
+			"Comment": "v0.1.0-11-g6706eac",
+			"Rev": "6706eacec36fe4412b40db28f7385221103a1370"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/client/apps",
-			"Comment": "v0.1.0-8-gc35f01a",
-			"Rev": "c35f01a3f2337b5f98ecf37e03faf3dc99e05cbc"
+			"Comment": "v0.1.0-11-g6706eac",
+			"Rev": "6706eacec36fe4412b40db28f7385221103a1370"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/client/auth",
-			"Comment": "v0.1.0-8-gc35f01a",
-			"Rev": "c35f01a3f2337b5f98ecf37e03faf3dc99e05cbc"
+			"Comment": "v0.1.0-11-g6706eac",
+			"Rev": "6706eacec36fe4412b40db28f7385221103a1370"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/client/deployments",
-			"Comment": "v0.1.0-8-gc35f01a",
-			"Rev": "c35f01a3f2337b5f98ecf37e03faf3dc99e05cbc"
+			"Comment": "v0.1.0-11-g6706eac",
+			"Rev": "6706eacec36fe4412b40db28f7385221103a1370"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/client/teams",
-			"Comment": "v0.1.0-8-gc35f01a",
-			"Rev": "c35f01a3f2337b5f98ecf37e03faf3dc99e05cbc"
+			"Comment": "v0.1.0-11-g6706eac",
+			"Rev": "6706eacec36fe4412b40db28f7385221103a1370"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/client/users",
-			"Comment": "v0.1.0-8-gc35f01a",
-			"Rev": "c35f01a3f2337b5f98ecf37e03faf3dc99e05cbc"
+			"Comment": "v0.1.0-11-g6706eac",
+			"Rev": "6706eacec36fe4412b40db28f7385221103a1370"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/models",
-			"Comment": "v0.1.0-8-gc35f01a",
-			"Rev": "c35f01a3f2337b5f98ecf37e03faf3dc99e05cbc"
+			"Comment": "v0.1.0-11-g6706eac",
+			"Rev": "6706eacec36fe4412b40db28f7385221103a1370"
 		},
 		{
 			"ImportPath": "github.com/magiconair/properties",
 			"Comment": "v1.7.0",
 			"Rev": "c265cfa48dda6474e208715ca93e987829f572f8"
+		},
+		{
+			"ImportPath": "github.com/mailru/easyjson/buffer",
+			"Rev": "d5b7844b561a7bc640052f1b935f7b800330d7e0"
+		},
+		{
+			"ImportPath": "github.com/mailru/easyjson/jlexer",
+			"Rev": "d5b7844b561a7bc640052f1b935f7b800330d7e0"
+		},
+		{
+			"ImportPath": "github.com/mailru/easyjson/jwriter",
+			"Rev": "d5b7844b561a7bc640052f1b935f7b800330d7e0"
 		},
 		{
 			"ImportPath": "github.com/mattn/go-colorable",
@@ -194,10 +213,6 @@
 		{
 			"ImportPath": "github.com/olekukonko/tablewriter",
 			"Rev": "daf2955e742cf123959884fdff4685aa79b63135"
-		},
-		{
-			"ImportPath": "github.com/opennota/urlesc",
-			"Rev": "5fa9ff0392746aeae1c4b37fcc42c65afa7a9587"
 		},
 		{
 			"ImportPath": "github.com/satori/go.uuid",
@@ -234,19 +249,63 @@
 		},
 		{
 			"ImportPath": "golang.org/x/net/context",
-			"Rev": "8aacbecd63e105fa5f07afbd49472fd3e17a19d1"
+			"Rev": "075e191f18186a8ff2becaf64478e30f4545cdad"
 		},
 		{
 			"ImportPath": "golang.org/x/net/context/ctxhttp",
-			"Rev": "8aacbecd63e105fa5f07afbd49472fd3e17a19d1"
+			"Rev": "075e191f18186a8ff2becaf64478e30f4545cdad"
+		},
+		{
+			"ImportPath": "golang.org/x/net/idna",
+			"Rev": "075e191f18186a8ff2becaf64478e30f4545cdad"
 		},
 		{
 			"ImportPath": "golang.org/x/sys/unix",
 			"Rev": "62bee037599929a6e9146f29d10dd5208c43507d"
 		},
 		{
+			"ImportPath": "golang.org/x/text/cases",
+			"Rev": "2910a502d2bf9e43193af9d68ca516529614eed3"
+		},
+		{
+			"ImportPath": "golang.org/x/text/internal/tag",
+			"Rev": "2910a502d2bf9e43193af9d68ca516529614eed3"
+		},
+		{
+			"ImportPath": "golang.org/x/text/language",
+			"Rev": "2910a502d2bf9e43193af9d68ca516529614eed3"
+		},
+		{
+			"ImportPath": "golang.org/x/text/runes",
+			"Rev": "2910a502d2bf9e43193af9d68ca516529614eed3"
+		},
+		{
+			"ImportPath": "golang.org/x/text/secure/bidirule",
+			"Rev": "2910a502d2bf9e43193af9d68ca516529614eed3"
+		},
+		{
+			"ImportPath": "golang.org/x/text/secure/precis",
+			"Rev": "2910a502d2bf9e43193af9d68ca516529614eed3"
+		},
+		{
+			"ImportPath": "golang.org/x/text/transform",
+			"Rev": "2910a502d2bf9e43193af9d68ca516529614eed3"
+		},
+		{
+			"ImportPath": "golang.org/x/text/unicode/bidi",
+			"Rev": "2910a502d2bf9e43193af9d68ca516529614eed3"
+		},
+		{
+			"ImportPath": "golang.org/x/text/unicode/norm",
+			"Rev": "2910a502d2bf9e43193af9d68ca516529614eed3"
+		},
+		{
+			"ImportPath": "golang.org/x/text/width",
+			"Rev": "2910a502d2bf9e43193af9d68ca516529614eed3"
+		},
+		{
 			"ImportPath": "gopkg.in/yaml.v2",
-			"Rev": "a83829b6f1293c91addabc89d0571c246397bbf4"
+			"Rev": "e4d366fc3c7938e2958e662b4258c7a89e1f0e3e"
 		}
 	]
 }
