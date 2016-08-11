@@ -1,22 +1,9 @@
-// Copyright © 2016 NAME HERE <EMAIL ADDRESS>
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package cmd
 
 import (
 	"fmt"
 
+	_ "github.com/prometheus/common/log"
 	"github.com/spf13/cobra"
 )
 
@@ -84,6 +71,43 @@ var getTeamsCmd = &cobra.Command{
 	},
 }
 
+var addUserToTeamCmd = &cobra.Command{
+	Use:   "team-user",
+	Short: "Add user to team",
+	Long: `Add a user to team.
+
+You can add a new user as a member of a team with:
+
+	$ teresa add team-user --email john.doe@teresa.com --team my-team
+
+You need to create a user before use this command.
+If the user already is member of the team, you will get an error.
+`,
+	Run: func(cmd *cobra.Command, args []string) {
+		if teamNameFlag == "" {
+			Fatalf(cmd, "team name is required")
+		}
+		if userEmailFlag == "" {
+			Fatalf(cmd, "user e-mail is required")
+		}
+		tc := NewTeresa()
+		// get team if by team name
+		teamID := tc.GetTeamID(teamNameFlag)
+		// add user to team
+		err := tc.AddUserToTeam(teamID, userEmailFlag)
+		if err == nil {
+			log.Infof("user [%s] is now member of the team [%s]", userEmailFlag, teamNameFlag)
+			return
+		}
+		if err.Code() == 500 {
+			log.Fatalf("Error with the command")
+		}
+		if err.Code() == 422 {
+			log.Fatal(err.Payload.Message)
+		}
+	},
+}
+
 func init() {
 	createCmd.AddCommand(teamCmd)
 	teamCmd.Flags().StringVarP(&teamNameFlag, "name", "n", "", "team name [required]")
@@ -94,4 +118,9 @@ func init() {
 	deleteTeamCmd.Flags().Int64Var(&teamIDFlag, "id", 0, "team ID [required]")
 
 	getCmd.AddCommand(getTeamsCmd)
+
+	// add user to team
+	addCmd.AddCommand(addUserToTeamCmd)
+	addUserToTeamCmd.Flags().StringVar(&userEmailFlag, "email", "", "user email [required]")
+	addUserToTeamCmd.Flags().StringVar(&teamNameFlag, "team", "", "team name [required]")
 }

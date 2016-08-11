@@ -18,6 +18,7 @@ import (
 	"github.com/luizalabs/tapi/client/teams"
 	"github.com/luizalabs/tapi/client/users"
 	"github.com/luizalabs/tapi/models"
+	_ "github.com/prometheus/common/log"
 )
 
 // TeresaClient foo bar
@@ -255,4 +256,20 @@ func (tc TeresaClient) PartialUpdateApp(teamID, appID int64, operations []*model
 
 	_, err := tc.teresa.Apps.PartialUpdateApp(p, tc.apiKeyAuthFunc)
 	return err
+}
+
+// AddUserToTeam adds a user (by email) to a team.
+// if the user is already part of the team, returns error
+func (tc TeresaClient) AddUserToTeam(teamID int64, userEmail string) *teams.AddUserToTeamDefault {
+	p := teams.NewAddUserToTeamParams()
+	p.TeamID = teamID
+	email := strfmt.Email(userEmail)
+	p.User.Email = &email
+
+	_, err := tc.teresa.Teams.AddUserToTeam(p, tc.apiKeyAuthFunc)
+	if err != nil {
+		return err.(*teams.AddUserToTeamDefault)
+	}
+
+	return nil
 }
