@@ -1,5 +1,5 @@
 all:
-	@go build -o teresa
+	@godep go build -o teresa
 
 test:
-	@go test -v ./cmd
+	@godep go test -v ./cmd
