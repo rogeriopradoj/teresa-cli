@@ -138,38 +138,38 @@
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/client",
-			"Comment": "v0.1.0-19-g1903fd6",
-			"Rev": "1903fd615924c7790c14432f3afa3c9a30e85ac7"
+			"Comment": "v0.1.0-22-ga02a1ed",
+			"Rev": "a02a1ed3158f44b5489cfb98bd5bf472409e71f1"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/client/apps",
-			"Comment": "v0.1.0-19-g1903fd6",
-			"Rev": "1903fd615924c7790c14432f3afa3c9a30e85ac7"
+			"Comment": "v0.1.0-22-ga02a1ed",
+			"Rev": "a02a1ed3158f44b5489cfb98bd5bf472409e71f1"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/client/auth",
-			"Comment": "v0.1.0-19-g1903fd6",
-			"Rev": "1903fd615924c7790c14432f3afa3c9a30e85ac7"
+			"Comment": "v0.1.0-22-ga02a1ed",
+			"Rev": "a02a1ed3158f44b5489cfb98bd5bf472409e71f1"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/client/deployments",
-			"Comment": "v0.1.0-19-g1903fd6",
-			"Rev": "1903fd615924c7790c14432f3afa3c9a30e85ac7"
+			"Comment": "v0.1.0-22-ga02a1ed",
+			"Rev": "a02a1ed3158f44b5489cfb98bd5bf472409e71f1"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/client/teams",
-			"Comment": "v0.1.0-19-g1903fd6",
-			"Rev": "1903fd615924c7790c14432f3afa3c9a30e85ac7"
+			"Comment": "v0.1.0-22-ga02a1ed",
+			"Rev": "a02a1ed3158f44b5489cfb98bd5bf472409e71f1"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/client/users",
-			"Comment": "v0.1.0-19-g1903fd6",
-			"Rev": "1903fd615924c7790c14432f3afa3c9a30e85ac7"
+			"Comment": "v0.1.0-22-ga02a1ed",
+			"Rev": "a02a1ed3158f44b5489cfb98bd5bf472409e71f1"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/models",
-			"Comment": "v0.1.0-19-g1903fd6",
-			"Rev": "1903fd615924c7790c14432f3afa3c9a30e85ac7"
+			"Comment": "v0.1.0-22-ga02a1ed",
+			"Rev": "a02a1ed3158f44b5489cfb98bd5bf472409e71f1"
 		},
 		{
 			"ImportPath": "github.com/magiconair/properties",
