@@ -59,9 +59,13 @@ var getTeamsCmd = &cobra.Command{
 
 		fmt.Println("\nTeams:")
 		for _, t := range teams {
-			fmt.Printf("- %s\n", *t.Name)
+			if t.IAmMember {
+				fmt.Printf("- %s (member)\n", *t.Name)
+			} else {
+				fmt.Printf("- %s\n", *t.Name)
+			}
 			if t.Email != "" {
-				fmt.Printf("  e-mail: %s\n", t.Email)
+				fmt.Printf("  contact: %s\n", t.Email)
 			}
 			if t.URL != "" {
 				fmt.Printf("  url: %s\n", t.URL)
