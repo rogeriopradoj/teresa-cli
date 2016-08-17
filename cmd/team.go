@@ -95,10 +95,7 @@ If the user already is member of the team, you will get an error.
 			Fatalf(cmd, "user e-mail is required")
 		}
 		tc := NewTeresa()
-		// get team if by team name
-		teamID := tc.GetTeamID(teamNameFlag)
-		// add user to team
-		err := tc.AddUserToTeam(teamID, userEmailFlag)
+		err := tc.AddUserToTeam(teamNameFlag, userEmailFlag)
 		if err == nil {
 			log.Infof("user [%s] is now member of the team [%s]", userEmailFlag, teamNameFlag)
 			return
