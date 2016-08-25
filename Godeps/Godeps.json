@@ -35,6 +35,10 @@
 			"Rev": "a00ac22c746220ee70a0891a0ec4aa6c56c6bb6a"
 		},
 		{
+			"ImportPath": "github.com/davecgh/go-spew/spew",
+			"Rev": "5215b55f46b2b919f50a1df0eaa5886afe4e3b3d"
+		},
+		{
 			"ImportPath": "github.com/fatih/color",
 			"Comment": "v0.2.0",
 			"Rev": "87d4004f2ab62d0d255e0a38f1680aa534549fe3"
@@ -46,11 +50,11 @@
 		},
 		{
 			"ImportPath": "github.com/go-openapi/analysis",
-			"Rev": "abc9a6171f5bf03ada39aead1aa7fd7bbd44d50f"
+			"Rev": "b44dc874b601d9e4e2f6e19140e794ba24bead3b"
 		},
 		{
 			"ImportPath": "github.com/go-openapi/errors",
-			"Rev": "d24ebc2075bad502fac3a8ae27aa6dd58e1952dc"
+			"Rev": "529f25f426e497dbdecde8acb36a8e1080d50c32"
 		},
 		{
 			"ImportPath": "github.com/go-openapi/jsonpointer",
@@ -66,11 +70,11 @@
 		},
 		{
 			"ImportPath": "github.com/go-openapi/runtime",
-			"Rev": "11e322eeecc1032d5a0a96c566ed53f2b5c26e22"
+			"Rev": "b5bd5f10b3ecfc154ac2bdf3cfe5119d313a81fb"
 		},
 		{
 			"ImportPath": "github.com/go-openapi/runtime/client",
-			"Rev": "11e322eeecc1032d5a0a96c566ed53f2b5c26e22"
+			"Rev": "b5bd5f10b3ecfc154ac2bdf3cfe5119d313a81fb"
 		},
 		{
 			"ImportPath": "github.com/go-openapi/spec",
@@ -78,11 +82,11 @@
 		},
 		{
 			"ImportPath": "github.com/go-openapi/strfmt",
-			"Rev": "dfda818c47a4ae5a1dde75ac776f34b2c95de993"
+			"Rev": "d65c7fdb29eca313476e529628176fe17e58c488"
 		},
 		{
 			"ImportPath": "github.com/go-openapi/swag",
-			"Rev": "1d0bd113de87027671077d3c71eb3ac5d7dbba72"
+			"Rev": "0e04f5e499b19bf51031c01a00f098f25067d8dc"
 		},
 		{
 			"ImportPath": "github.com/go-openapi/validate",
@@ -138,38 +142,38 @@
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/client",
-			"Comment": "v0.1.1-4-g4bcdf64",
-			"Rev": "4bcdf64e5a16fdd767c106f9021f72b3c9342bc3"
+			"Comment": "v0.1.1-18-g248111e",
+			"Rev": "248111e62e72eccde225e6d87fc2d886d32cb48e"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/client/apps",
-			"Comment": "v0.1.1-4-g4bcdf64",
-			"Rev": "4bcdf64e5a16fdd767c106f9021f72b3c9342bc3"
+			"Comment": "v0.1.1-18-g248111e",
+			"Rev": "248111e62e72eccde225e6d87fc2d886d32cb48e"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/client/auth",
-			"Comment": "v0.1.1-4-g4bcdf64",
-			"Rev": "4bcdf64e5a16fdd767c106f9021f72b3c9342bc3"
+			"Comment": "v0.1.1-18-g248111e",
+			"Rev": "248111e62e72eccde225e6d87fc2d886d32cb48e"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/client/deployments",
-			"Comment": "v0.1.1-4-g4bcdf64",
-			"Rev": "4bcdf64e5a16fdd767c106f9021f72b3c9342bc3"
+			"Comment": "v0.1.1-18-g248111e",
+			"Rev": "248111e62e72eccde225e6d87fc2d886d32cb48e"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/client/teams",
-			"Comment": "v0.1.1-4-g4bcdf64",
-			"Rev": "4bcdf64e5a16fdd767c106f9021f72b3c9342bc3"
+			"Comment": "v0.1.1-18-g248111e",
+			"Rev": "248111e62e72eccde225e6d87fc2d886d32cb48e"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/client/users",
-			"Comment": "v0.1.1-4-g4bcdf64",
-			"Rev": "4bcdf64e5a16fdd767c106f9021f72b3c9342bc3"
+			"Comment": "v0.1.1-18-g248111e",
+			"Rev": "248111e62e72eccde225e6d87fc2d886d32cb48e"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/models",
-			"Comment": "v0.1.1-4-g4bcdf64",
-			"Rev": "4bcdf64e5a16fdd767c106f9021f72b3c9342bc3"
+			"Comment": "v0.1.1-18-g248111e",
+			"Rev": "248111e62e72eccde225e6d87fc2d886d32cb48e"
 		},
 		{
 			"ImportPath": "github.com/magiconair/properties",
@@ -178,15 +182,15 @@
 		},
 		{
 			"ImportPath": "github.com/mailru/easyjson/buffer",
-			"Rev": "d5b7844b561a7bc640052f1b935f7b800330d7e0"
+			"Rev": "34560e358dc05e2c28f6fda2f5c9e7494a4b9b19"
 		},
 		{
 			"ImportPath": "github.com/mailru/easyjson/jlexer",
-			"Rev": "d5b7844b561a7bc640052f1b935f7b800330d7e0"
+			"Rev": "34560e358dc05e2c28f6fda2f5c9e7494a4b9b19"
 		},
 		{
 			"ImportPath": "github.com/mailru/easyjson/jwriter",
-			"Rev": "d5b7844b561a7bc640052f1b935f7b800330d7e0"
+			"Rev": "34560e358dc05e2c28f6fda2f5c9e7494a4b9b19"
 		},
 		{
 			"ImportPath": "github.com/mattn/go-colorable",
@@ -213,6 +217,10 @@
 		{
 			"ImportPath": "github.com/olekukonko/tablewriter",
 			"Rev": "daf2955e742cf123959884fdff4685aa79b63135"
+		},
+		{
+			"ImportPath": "github.com/prometheus/common/log",
+			"Rev": "ebdfc6da46522d58825777cf1f90490a5b1ef1d8"
 		},
 		{
 			"ImportPath": "github.com/satori/go.uuid",

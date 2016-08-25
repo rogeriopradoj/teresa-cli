@@ -3,6 +3,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"io"
 	"net/url"
 	"os"
 	"time"
@@ -234,17 +235,15 @@ func (tc TeresaClient) GetTeams() (teamsList []*models.Team, err error) {
 }
 
 // CreateDeploy creates a new deploy
-func (tc TeresaClient) CreateDeploy(teamID, appID int64, description string, tarBall *os.File) (deploy *models.App, err error) {
+func (tc TeresaClient) CreateDeploy(teamID, appID int64, description string, tarBall *os.File, writer io.Writer) (err error) {
 	p := deployments.NewCreateDeploymentParams()
 	p.TeamID = teamID
 	p.AppID = appID
 	p.Description = &description
 	p.AppTarball = *tarBall
-	r, err := tc.teresa.Deployments.CreateDeployment(p, tc.apiKeyAuthFunc)
-	if err != nil {
-		return nil, err
-	}
-	return r.Payload, nil
+
+	_, err = tc.teresa.Deployments.CreateDeployment(p, tc.apiKeyAuthFunc, writer)
+	return err
 }
 
 // PartialUpdateApp partial updates app... for now, updates only envvars
