@@ -5,9 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"time"
 
-	"github.com/briandowns/spinner"
 	"github.com/jhoonb/archivex"
 	"github.com/satori/go.uuid"
 	"github.com/spf13/cobra"
@@ -65,19 +63,9 @@ func createDeploy(appName, teamName, description, appFolder string) error {
 
 	log.Infof("Deploying application to cluster %s...", clusterName)
 	log.Info("It'll take a few minutes to bring up the provider's load balancer if this is the first time you deploy your app")
-	s := spinner.New(spinner.CharSets[11], 100*time.Millisecond)
-	s.Start()
-	app, err := tc.CreateDeploy(a.TeamID, a.AppID, description, file)
-	s.Stop()
+	err = tc.CreateDeploy(a.TeamID, a.AppID, description, file, os.Stdout)
 	if err != nil {
-		log.Fatalf("error creating the deploy. %s", err)
-	}
-	log.Infof("App [%s] deployed with success", *app.Name)
-	log.Infof("Deploy Id: %s", *app.DeploymentList[0].UUID)
-	log.Infof("Scale: %d", *app.Scale)
-	log.Info("App load balancer addresses:")
-	for _, address := range app.AddressList {
-		log.Infof("  %s", address)
+		log.Fatalf("error when creating the deploy. %s", err)
 	}
 	return nil
 }
