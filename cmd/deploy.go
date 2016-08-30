@@ -3,8 +3,10 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/jhoonb/archivex"
 	"github.com/satori/go.uuid"
@@ -40,6 +42,25 @@ eg.:
 	},
 }
 
+// Writer to be used on deployment, as Write() is very specific and
+// should be implemented some other way -- moving out the deployment
+// error checking from it's Write method.
+type deploymentWriter struct {
+	w io.Writer
+}
+
+// Write the buffer out to logger, return an error when the string
+// `----------deployment-error----------` is found on the buffer.
+func (tw *deploymentWriter) Write(p []byte) (n int, err error) {
+	s := strings.Replace(string(p), deploymentErrorMark, "", -1)
+	s = strings.Replace(s, deploymentSuccessMark, "", -1)
+	log.Info(strings.Trim(fmt.Sprintf("%s", s), "\n"))
+	if strings.Contains(string(p), deploymentErrorMark) {
+		return len(p), errors.New("Deploy failed")
+	}
+	return len(p), nil
+}
+
 func createDeploy(appName, teamName, description, appFolder string) error {
 	clusterName, err := getCurrentClusterName()
 	if err != nil {
@@ -61,11 +82,12 @@ func createDeploy(appName, teamName, description, appFolder string) error {
 	}
 	defer file.Close()
 
-	log.Infof("Deploying application to cluster %s...", clusterName)
-	log.Info("It'll take a few minutes to bring up the provider's load balancer if this is the first time you deploy your app")
-	err = tc.CreateDeploy(a.TeamID, a.AppID, description, file, os.Stdout)
+	log.Infof("Deploying application to cluster `%s`", clusterName)
+
+	writer := &deploymentWriter{w: os.Stdout}
+	_, err = tc.CreateDeploy(a.TeamID, a.AppID, description, file, writer)
 	if err != nil {
-		log.Fatalf("error when creating the deploy. %s", err)
+		log.Fatal(err.Error())
 	}
 	return nil
 }
