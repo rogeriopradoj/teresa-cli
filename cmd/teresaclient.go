@@ -19,7 +19,7 @@ import (
 	"github.com/luizalabs/tapi/client/teams"
 	"github.com/luizalabs/tapi/client/users"
 	"github.com/luizalabs/tapi/models"
-	_ "github.com/prometheus/common/log"
+	_ "github.com/prometheus/common/log" // still needed?
 )
 
 // TeresaClient foo bar
@@ -235,15 +235,18 @@ func (tc TeresaClient) GetTeams() (teamsList []*models.Team, err error) {
 }
 
 // CreateDeploy creates a new deploy
-func (tc TeresaClient) CreateDeploy(teamID, appID int64, description string, tarBall *os.File, writer io.Writer) (err error) {
+func (tc TeresaClient) CreateDeploy(teamID, appID int64, description string, tarBall *os.File, writer io.Writer) (io.Writer, error) {
 	p := deployments.NewCreateDeploymentParams()
 	p.TeamID = teamID
 	p.AppID = appID
 	p.Description = &description
 	p.AppTarball = *tarBall
 
-	_, err = tc.teresa.Deployments.CreateDeployment(p, tc.apiKeyAuthFunc, writer)
-	return err
+	r, err := tc.teresa.Deployments.CreateDeployment(p, tc.apiKeyAuthFunc, writer)
+	if err != nil {
+		return nil, err
+	}
+	return r.Payload, err
 }
 
 // PartialUpdateApp partial updates app... for now, updates only envvars
