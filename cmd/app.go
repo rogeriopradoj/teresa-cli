@@ -1,13 +1,9 @@
 package cmd
 
 import (
-	"fmt"
-	"os"
-	"strconv"
 	"strings"
 
 	"github.com/luizalabs/tapi/models"
-	"github.com/olekukonko/tablewriter"
 	_ "github.com/prometheus/common/log"
 	"github.com/spf13/cobra"
 )
@@ -35,21 +31,21 @@ to run with the --scale (defaults to 1) option:
 	$ teresa create app my_app_name --team my_team --scale 4
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 {
-			Usage(cmd)
-			return
-		}
-		if appScaleFlag == 0 {
-			Fatalf(cmd, "at least one replica is required")
-		}
-
-		tc := NewTeresa()
-		teamID := tc.GetTeamID(teamNameFlag)
-		app, err := tc.CreateApp(args[0], int64(appScaleFlag), teamID)
-		if err != nil {
-			log.Fatal(err)
-		}
-		log.Infof("App created. Name: %s Replicas: %d", *app.Name, *app.Scale)
+		// if len(args) == 0 {
+		// 	Usage(cmd)
+		// 	return
+		// }
+		// if appScaleFlag == 0 {
+		// 	Fatalf(cmd, "at least one replica is required")
+		// }
+		//
+		// tc := NewTeresa()
+		// teamID := tc.GetTeamID(teamNameFlag)
+		// app, err := tc.CreateApp(args[0], int64(appScaleFlag), teamID)
+		// if err != nil {
+		// 	log.Fatal(err)
+		// }
+		// log.Infof("App created. Name: %s Replicas: %d", *app.Name, *app.Scale)
 	},
 }
 
@@ -68,54 +64,54 @@ eg.:
 	$ teresa get app --app my_app_name --team my_team
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		tc := NewTeresa()
-
-		if appNameFlag != "" {
-			a := tc.GetAppInfo(teamNameFlag, appNameFlag)
-
-			app, err := tc.GetAppDetail(a.TeamID, a.AppID)
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			fmt.Printf("\nApp: %s\n", *app.Name)
-			fmt.Printf("Scale: %d\n", *app.Scale)
-			// env vars
-			if len(app.EnvVars) > 0 {
-				fmt.Print("\nEnv Vars:\n")
-				for _, x := range app.EnvVars {
-					fmt.Printf("  %s: %s\n", *x.Key, *x.Value)
-				}
-			}
-			// address
-			if len(app.AddressList) > 0 {
-				fmt.Print("\nAddress:\n")
-				for _, x := range app.AddressList {
-					fmt.Printf("  %s\n", x)
-				}
-			}
-			fmt.Println()
-
-		} else {
-			teamID := tc.GetTeamID(teamNameFlag)
-			apps, err := tc.GetApps(teamID)
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			table := tablewriter.NewWriter(os.Stdout)
-			table.SetHeader([]string{"APP", "SCALE", "ADDRESS"})
-			table.SetRowLine(true)
-			table.SetAlignment(tablewriter.ALIGN_LEFT)
-			table.SetRowSeparator("-")
-			table.SetAutoWrapText(false)
-
-			for _, a := range apps {
-				r := []string{*a.Name, strconv.Itoa(int(*a.Scale)), strings.Join(a.AddressList, "\n")}
-				table.Append(r)
-			}
-			table.Render()
-		}
+		// tc := NewTeresa()
+		//
+		// if appNameFlag != "" {
+		// 	a := tc.GetAppInfo(teamNameFlag, appNameFlag)
+		//
+		// 	app, err := tc.GetAppDetail(a.TeamID, a.AppID)
+		// 	if err != nil {
+		// 		log.Fatal(err)
+		// 	}
+		//
+		// 	fmt.Printf("\nApp: %s\n", *app.Name)
+		// 	fmt.Printf("Scale: %d\n", *app.Scale)
+		// 	// env vars
+		// 	if len(app.EnvVars) > 0 {
+		// 		fmt.Print("\nEnv Vars:\n")
+		// 		for _, x := range app.EnvVars {
+		// 			fmt.Printf("  %s: %s\n", *x.Key, *x.Value)
+		// 		}
+		// 	}
+		// 	// address
+		// 	if len(app.AddressList) > 0 {
+		// 		fmt.Print("\nAddress:\n")
+		// 		for _, x := range app.AddressList {
+		// 			fmt.Printf("  %s\n", x)
+		// 		}
+		// 	}
+		// 	fmt.Println()
+		//
+		// } else {
+		// 	teamID := tc.GetTeamID(teamNameFlag)
+		// 	apps, err := tc.GetApps(teamID)
+		// 	if err != nil {
+		// 		log.Fatal(err)
+		// 	}
+		//
+		// 	table := tablewriter.NewWriter(os.Stdout)
+		// 	table.SetHeader([]string{"APP", "SCALE", "ADDRESS"})
+		// 	table.SetRowLine(true)
+		// 	table.SetAlignment(tablewriter.ALIGN_LEFT)
+		// 	table.SetRowSeparator("-")
+		// 	table.SetAutoWrapText(false)
+		//
+		// 	for _, a := range apps {
+		// 		r := []string{*a.Name, strconv.Itoa(int(*a.Scale)), strings.Join(a.AddressList, "\n")}
+		// 		table.Append(r)
+		// 	}
+		// 	table.Render()
+		// }
 	},
 }
 

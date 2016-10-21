@@ -13,9 +13,7 @@ import (
 	httptransport "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
 	apiclient "github.com/luizalabs/tapi/client"
-	"github.com/luizalabs/tapi/client/apps"
 	"github.com/luizalabs/tapi/client/auth"
-	"github.com/luizalabs/tapi/client/deployments"
 	"github.com/luizalabs/tapi/client/teams"
 	"github.com/luizalabs/tapi/client/users"
 	"github.com/luizalabs/tapi/models"
@@ -119,34 +117,37 @@ func (tc TeresaClient) DeleteTeam(ID int64) error {
 
 // CreateApp creates an user
 func (tc TeresaClient) CreateApp(name string, scale int64, teamID int64) (app *models.App, err error) {
-	params := apps.NewCreateAppParams()
-	params.TeamID = teamID
-	params.WithBody(&models.App{Name: &name, Scale: &scale})
-	r, err := tc.teresa.Apps.CreateApp(params, tc.apiKeyAuthFunc)
-	if err != nil {
-		return nil, err
-	}
-	return r.Payload, nil
+	// params := apps.NewCreateAppParams()
+	// params.TeamID = teamID
+	// params.WithBody(&models.App{Name: &name, Scale: &scale})
+	// r, err := tc.teresa.Apps.CreateApp(params, tc.apiKeyAuthFunc)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// return r.Payload, nil
+	return
 }
 
 // GetApps return apps for a specific team
 func (tc TeresaClient) GetApps(teamID int64) (app []*models.App, err error) {
-	params := apps.NewGetAppsParams().WithTeamID(teamID)
-	r, err := tc.teresa.Apps.GetApps(params, tc.apiKeyAuthFunc)
-	if err != nil {
-		return nil, err
-	}
-	return r.Payload.Items, nil
+	// params := apps.NewGetAppsParams().WithTeamID(teamID)
+	// r, err := tc.teresa.Apps.GetApps(params, tc.apiKeyAuthFunc)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// return r.Payload.Items, nil
+	return
 }
 
 // GetAppDetail Create app attributes
 func (tc TeresaClient) GetAppDetail(teamID, appID int64) (app *models.App, err error) {
-	params := apps.NewGetAppDetailsParams().WithTeamID(teamID).WithAppID(appID)
-	r, err := tc.teresa.Apps.GetAppDetails(params, tc.apiKeyAuthFunc)
-	if err != nil {
-		return nil, err
-	}
-	return r.Payload, nil
+	// params := apps.NewGetAppDetailsParams().WithTeamID(teamID).WithAppID(appID)
+	// r, err := tc.teresa.Apps.GetAppDetails(params, tc.apiKeyAuthFunc)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// return r.Payload, nil
+	return
 }
 
 // CreateUser Create an user
@@ -180,28 +181,28 @@ func (tc TeresaClient) Me() (user *models.User, err error) {
 
 // GetAppInfo return teamID and appID
 func (tc TeresaClient) GetAppInfo(teamName, appName string) (appInfo AppInfo) {
-	me, err := tc.Me()
-	if err != nil {
-		log.Fatalf("unable to get user information: %s", err)
-	}
-	if len(me.Teams) > 1 && teamName == "" {
-		log.Fatalln("User is in more than one team and provided none")
-	}
-	for _, t := range me.Teams {
-		if teamName == "" || *t.Name == teamName {
-			appInfo.TeamID = t.ID
-			for _, a := range t.Apps {
-				if *a.Name == appName {
-					appInfo.AppID = a.ID
-					break
-				}
-			}
-			break
-		}
-	}
-	if appInfo.TeamID == 0 || appInfo.AppID == 0 {
-		log.Fatalf("Invalid Team [%s] or App [%s]\n", teamName, appName)
-	}
+	// me, err := tc.Me()
+	// if err != nil {
+	// 	log.Fatalf("unable to get user information: %s", err)
+	// }
+	// if len(me.Teams) > 1 && teamName == "" {
+	// 	log.Fatalln("User is in more than one team and provided none")
+	// }
+	// for _, t := range me.Teams {
+	// 	if teamName == "" || *t.Name == teamName {
+	// 		appInfo.TeamID = t.ID
+	// 		for _, a := range t.Apps {
+	// 			if *a.Name == appName {
+	// 				appInfo.AppID = a.ID
+	// 				break
+	// 			}
+	// 		}
+	// 		break
+	// 	}
+	// }
+	// if appInfo.TeamID == 0 || appInfo.AppID == 0 {
+	// 	log.Fatalf("Invalid Team [%s] or App [%s]\n", teamName, appName)
+	// }
 	return
 }
 
@@ -236,28 +237,30 @@ func (tc TeresaClient) GetTeams() (teamsList []*models.Team, err error) {
 
 // CreateDeploy creates a new deploy
 func (tc TeresaClient) CreateDeploy(teamID, appID int64, description string, tarBall *os.File, writer io.Writer) (io.Writer, error) {
-	p := deployments.NewCreateDeploymentParams()
-	p.TeamID = teamID
-	p.AppID = appID
-	p.Description = &description
-	p.AppTarball = *tarBall
-
-	r, err := tc.teresa.Deployments.CreateDeployment(p, tc.apiKeyAuthFunc, writer)
-	if err != nil {
-		return nil, err
-	}
-	return r.Payload, err
+	// p := deployments.NewCreateDeploymentParams()
+	// p.TeamID = teamID
+	// p.AppID = appID
+	// p.Description = &description
+	// p.AppTarball = *tarBall
+	//
+	// r, err := tc.teresa.Deployments.CreateDeployment(p, tc.apiKeyAuthFunc, writer)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// return r.Payload, err
+	return nil, nil
 }
 
 // PartialUpdateApp partial updates app... for now, updates only envvars
 func (tc TeresaClient) PartialUpdateApp(teamID, appID int64, operations []*models.PatchAppRequest) error {
-	p := apps.NewPartialUpdateAppParams()
-	p.TeamID = teamID
-	p.AppID = appID
-	p.Body = operations
-
-	_, err := tc.teresa.Apps.PartialUpdateApp(p, tc.apiKeyAuthFunc)
-	return err
+	// p := apps.NewPartialUpdateAppParams()
+	// p.TeamID = teamID
+	// p.AppID = appID
+	// p.Body = operations
+	//
+	// _, err := tc.teresa.Apps.PartialUpdateApp(p, tc.apiKeyAuthFunc)
+	// return err
+	return nil
 }
 
 // AddUserToTeam adds a user (by email) to a team.
