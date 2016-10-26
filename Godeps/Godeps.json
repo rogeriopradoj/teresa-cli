@@ -546,6 +546,11 @@
 			"Rev": "34560e358dc05e2c28f6fda2f5c9e7494a4b9b19"
 		},
 		{
+			"ImportPath": "github.com/mattn/go-runewidth",
+			"Comment": "v0.0.1",
+			"Rev": "d6bea18f789704b5f83375793155289da36a3c7f"
+		},
+		{
 			"ImportPath": "github.com/mattn/go-sqlite3",
 			"Comment": "v1.1.0-71-ge118d44",
 			"Rev": "e118d4451349065b8e7ce0f0af32e033995363f8"
@@ -562,6 +567,10 @@
 		{
 			"ImportPath": "github.com/mitchellh/mapstructure",
 			"Rev": "d2dd0262208475919e1a362f675cfc0e7c10e905"
+		},
+		{
+			"ImportPath": "github.com/olekukonko/tablewriter",
+			"Rev": "daf2955e742cf123959884fdff4685aa79b63135"
 		},
 		{
 			"ImportPath": "github.com/pborman/uuid",
@@ -605,11 +614,11 @@
 		},
 		{
 			"ImportPath": "github.com/spf13/cast",
-			"Rev": "27b586b42e29bec072fe7379259cc719e1289da6"
+			"Rev": "2580bc98dc0e62908119e4737030cc2fdfc45e4c"
 		},
 		{
 			"ImportPath": "github.com/spf13/cobra",
-			"Rev": "6a8bd97bdb1fc0d08a83459940498ea49d3e8c93"
+			"Rev": "6e91dded25d73176bf7f60b40dd7aa1f0bf9be8d"
 		},
 		{
 			"ImportPath": "github.com/spf13/jwalterweatherman",
@@ -617,11 +626,11 @@
 		},
 		{
 			"ImportPath": "github.com/spf13/pflag",
-			"Rev": "367864438f1b1a3c7db4da06a2f55b144e6784e0"
+			"Rev": "5ccb023bc27df288a957c5e994cd44fd19619465"
 		},
 		{
 			"ImportPath": "github.com/spf13/viper",
-			"Rev": "c1ccc378a054ea8d4e38d8c67f6938d4760b53dd"
+			"Rev": "80ab6657f9ec7e5761f6603320d3d58dfe6970f6"
 		},
 		{
 			"ImportPath": "github.com/tylerb/graceful",
