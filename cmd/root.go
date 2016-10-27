@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"net"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -49,26 +50,41 @@ view the whole configuration anytime by running:
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
 	if cmd, err := RootCmd.ExecuteC(); err != nil {
-		if isCmdError(err) {
-			fmt.Printf("%s\n", err)
-			if !isSysError(err) {
-				fmt.Printf("\n%s", cmd.UsageString())
-			}
+		if isUsageError(err) {
+			fmt.Println(err.Error())
+			cmd.Usage()
 			os.Exit(1)
-		} else {
-			// Dont log error because the logger is not ready yet
-			// Print messagens like: unknown command "confi" for "cli"
-			fmt.Println(err)
-			os.Exit(-1)
 		}
+		// Hack to print a invalid command for root
+		// Ex.: teresa notvalidcommand
+		if cmd.HasParent() == false {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		// write errors to log for future troubleshooting
+		log.WithField("command", cmd.CommandPath()).WithError(err).Error("error on client")
+
+		// from here below, try to print some usefull information for the user...
+
+		// check if the error is a net error
+		if _, ok := err.(net.Error); ok {
+			fmt.Println("Faield to connect to server, or server is down!!!")
+		}
+
+		os.Exit(1)
 	}
 }
 
 func init() {
-	cobra.OnInitialize(initLog, initConfig)
+	// init log here
+	initLog()
+	// the config is only loaded if the command is valid,
+	// that is why we use OnInitialize
+	cobra.OnInitialize(initConfig)
 	// using this so i will check manualy for strange behavior of the cli
 	RootCmd.SilenceErrors = true
 	RootCmd.SilenceUsage = true
+
 	// change the suggestion distance of the commands
 	RootCmd.SuggestionsMinimumDistance = 3
 	RootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "config file")
@@ -121,6 +137,8 @@ func initConfig() {
 	log.Debugf("Config settings %+v", viper.AllSettings())
 }
 
+// FIXME: from here below, delete all?!?!?!
+
 // Fatalf Prints formatted output, prepends the cli usage and exits
 func Fatalf(cmd *cobra.Command, format string, a ...interface{}) {
 	s := fmt.Sprintf(format, a...)
@@ -131,6 +149,23 @@ func Fatalf(cmd *cobra.Command, format string, a ...interface{}) {
 // Usage Prints the cmd Long description and the usage string
 func Usage(cmd *cobra.Command) {
 	fmt.Printf("%s\n%s", cmd.Long, cmd.UsageString())
+}
+
+type usageError struct {
+	msg string
+}
+
+func (e usageError) Error() string { return e.msg }
+
+func newUsageError(msg string) error {
+	return &usageError{msg}
+}
+
+func isUsageError(err error) bool {
+	if _, ok := err.(*usageError); ok {
+		return true
+	}
+	return false
 }
 
 type cmdError struct {
