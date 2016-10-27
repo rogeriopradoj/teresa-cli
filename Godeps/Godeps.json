@@ -429,104 +429,108 @@
 			"Rev": "91921eb4cf999321cdbeebdba5a03555800d493b"
 		},
 		{
+			"ImportPath": "github.com/kr/fs",
+			"Rev": "2788f0dbd16903de03cb8186e5c7d97b69ad387b"
+		},
+		{
 			"ImportPath": "github.com/luizalabs/tapi/client",
-			"Comment": "v0.1.1-66-g3c494f7",
-			"Rev": "3c494f77c565dac5c71c6d6ea00ea2c2ced10d73"
+			"Comment": "v0.1.1-67-gf2ffabf",
+			"Rev": "f2ffabf475c2eccb60d75f84e8b81a663b538d09"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/client/apps",
-			"Comment": "v0.1.1-66-g3c494f7",
-			"Rev": "3c494f77c565dac5c71c6d6ea00ea2c2ced10d73"
+			"Comment": "v0.1.1-67-gf2ffabf",
+			"Rev": "f2ffabf475c2eccb60d75f84e8b81a663b538d09"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/client/auth",
-			"Comment": "v0.1.1-66-g3c494f7",
-			"Rev": "3c494f77c565dac5c71c6d6ea00ea2c2ced10d73"
+			"Comment": "v0.1.1-67-gf2ffabf",
+			"Rev": "f2ffabf475c2eccb60d75f84e8b81a663b538d09"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/client/deployments",
-			"Comment": "v0.1.1-66-g3c494f7",
-			"Rev": "3c494f77c565dac5c71c6d6ea00ea2c2ced10d73"
+			"Comment": "v0.1.1-67-gf2ffabf",
+			"Rev": "f2ffabf475c2eccb60d75f84e8b81a663b538d09"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/client/teams",
-			"Comment": "v0.1.1-66-g3c494f7",
-			"Rev": "3c494f77c565dac5c71c6d6ea00ea2c2ced10d73"
+			"Comment": "v0.1.1-67-gf2ffabf",
+			"Rev": "f2ffabf475c2eccb60d75f84e8b81a663b538d09"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/client/users",
-			"Comment": "v0.1.1-66-g3c494f7",
-			"Rev": "3c494f77c565dac5c71c6d6ea00ea2c2ced10d73"
+			"Comment": "v0.1.1-67-gf2ffabf",
+			"Rev": "f2ffabf475c2eccb60d75f84e8b81a663b538d09"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/cmd/teresa-server",
-			"Comment": "v0.1.1-66-g3c494f7",
-			"Rev": "3c494f77c565dac5c71c6d6ea00ea2c2ced10d73"
+			"Comment": "v0.1.1-67-gf2ffabf",
+			"Rev": "f2ffabf475c2eccb60d75f84e8b81a663b538d09"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/docs",
-			"Comment": "v0.1.1-66-g3c494f7",
-			"Rev": "3c494f77c565dac5c71c6d6ea00ea2c2ced10d73"
+			"Comment": "v0.1.1-67-gf2ffabf",
+			"Rev": "f2ffabf475c2eccb60d75f84e8b81a663b538d09"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/handlers",
-			"Comment": "v0.1.1-66-g3c494f7",
-			"Rev": "3c494f77c565dac5c71c6d6ea00ea2c2ced10d73"
+			"Comment": "v0.1.1-67-gf2ffabf",
+			"Rev": "f2ffabf475c2eccb60d75f84e8b81a663b538d09"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/helpers",
-			"Comment": "v0.1.1-66-g3c494f7",
-			"Rev": "3c494f77c565dac5c71c6d6ea00ea2c2ced10d73"
+			"Comment": "v0.1.1-67-gf2ffabf",
+			"Rev": "f2ffabf475c2eccb60d75f84e8b81a663b538d09"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/k8s",
-			"Comment": "v0.1.1-66-g3c494f7",
-			"Rev": "3c494f77c565dac5c71c6d6ea00ea2c2ced10d73"
+			"Comment": "v0.1.1-67-gf2ffabf",
+			"Rev": "f2ffabf475c2eccb60d75f84e8b81a663b538d09"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/models",
-			"Comment": "v0.1.1-66-g3c494f7",
-			"Rev": "3c494f77c565dac5c71c6d6ea00ea2c2ced10d73"
+			"Comment": "v0.1.1-67-gf2ffabf",
+			"Rev": "f2ffabf475c2eccb60d75f84e8b81a663b538d09"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/models/storage",
-			"Comment": "v0.1.1-66-g3c494f7",
-			"Rev": "3c494f77c565dac5c71c6d6ea00ea2c2ced10d73"
+			"Comment": "v0.1.1-67-gf2ffabf",
+			"Rev": "f2ffabf475c2eccb60d75f84e8b81a663b538d09"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/restapi",
-			"Comment": "v0.1.1-66-g3c494f7",
-			"Rev": "3c494f77c565dac5c71c6d6ea00ea2c2ced10d73"
+			"Comment": "v0.1.1-67-gf2ffabf",
+			"Rev": "f2ffabf475c2eccb60d75f84e8b81a663b538d09"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/restapi/operations",
-			"Comment": "v0.1.1-66-g3c494f7",
-			"Rev": "3c494f77c565dac5c71c6d6ea00ea2c2ced10d73"
+			"Comment": "v0.1.1-67-gf2ffabf",
+			"Rev": "f2ffabf475c2eccb60d75f84e8b81a663b538d09"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/restapi/operations/apps",
-			"Comment": "v0.1.1-66-g3c494f7",
-			"Rev": "3c494f77c565dac5c71c6d6ea00ea2c2ced10d73"
+			"Comment": "v0.1.1-67-gf2ffabf",
+			"Rev": "f2ffabf475c2eccb60d75f84e8b81a663b538d09"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/restapi/operations/auth",
-			"Comment": "v0.1.1-66-g3c494f7",
-			"Rev": "3c494f77c565dac5c71c6d6ea00ea2c2ced10d73"
+			"Comment": "v0.1.1-67-gf2ffabf",
+			"Rev": "f2ffabf475c2eccb60d75f84e8b81a663b538d09"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/restapi/operations/deployments",
-			"Comment": "v0.1.1-66-g3c494f7",
-			"Rev": "3c494f77c565dac5c71c6d6ea00ea2c2ced10d73"
+			"Comment": "v0.1.1-67-gf2ffabf",
+			"Rev": "f2ffabf475c2eccb60d75f84e8b81a663b538d09"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/restapi/operations/teams",
-			"Comment": "v0.1.1-66-g3c494f7",
-			"Rev": "3c494f77c565dac5c71c6d6ea00ea2c2ced10d73"
+			"Comment": "v0.1.1-67-gf2ffabf",
+			"Rev": "f2ffabf475c2eccb60d75f84e8b81a663b538d09"
 		},
 		{
 			"ImportPath": "github.com/luizalabs/tapi/restapi/operations/users",
-			"Comment": "v0.1.1-66-g3c494f7",
-			"Rev": "3c494f77c565dac5c71c6d6ea00ea2c2ced10d73"
+			"Comment": "v0.1.1-67-gf2ffabf",
+			"Rev": "f2ffabf475c2eccb60d75f84e8b81a663b538d09"
 		},
 		{
 			"ImportPath": "github.com/magiconair/properties",
@@ -578,6 +582,24 @@
 			"Rev": "b984ec7fa9ff9e428bd0cf0abf429384dfbe3e37"
 		},
 		{
+			"ImportPath": "github.com/pelletier/go-buffruneio",
+			"Rev": "df1e16fde7fc330a0ca68167c23bf7ed6ac31d6d"
+		},
+		{
+			"ImportPath": "github.com/pelletier/go-toml",
+			"Comment": "v0.3.5-16-g45932ad",
+			"Rev": "45932ad32dfdd20826f5671da37a5f3ce9f26a8d"
+		},
+		{
+			"ImportPath": "github.com/pkg/errors",
+			"Comment": "v0.8.0-1-g839d9e9",
+			"Rev": "839d9e913e063e28dfd0e6c7b7512793e0a48be9"
+		},
+		{
+			"ImportPath": "github.com/pkg/sftp",
+			"Rev": "4d0e916071f68db74f8a73926335f809396d6b42"
+		},
+		{
 			"ImportPath": "github.com/prometheus/client_golang/prometheus",
 			"Comment": "0.7.0-91-g52437c8",
 			"Rev": "52437c81da6b127a9925d17eb3a382a2e5fd395e"
@@ -611,6 +633,18 @@
 			"ImportPath": "github.com/satori/go.uuid",
 			"Comment": "v1.1.0-1-g0aa62d5",
 			"Rev": "0aa62d5ddceb50dbcb909d790b5345affd3669b6"
+		},
+		{
+			"ImportPath": "github.com/spf13/afero",
+			"Rev": "52e4a6cfac46163658bd4f123c49b6ee7dc75f78"
+		},
+		{
+			"ImportPath": "github.com/spf13/afero/mem",
+			"Rev": "52e4a6cfac46163658bd4f123c49b6ee7dc75f78"
+		},
+		{
+			"ImportPath": "github.com/spf13/afero/sftp",
+			"Rev": "52e4a6cfac46163658bd4f123c49b6ee7dc75f78"
 		},
 		{
 			"ImportPath": "github.com/spf13/cast",
@@ -655,6 +689,22 @@
 		},
 		{
 			"ImportPath": "golang.org/x/crypto/blowfish",
+			"Rev": "f3241ce8505855877cc8a9717bd61a0f7c4ea83c"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/curve25519",
+			"Rev": "f3241ce8505855877cc8a9717bd61a0f7c4ea83c"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/ed25519",
+			"Rev": "f3241ce8505855877cc8a9717bd61a0f7c4ea83c"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/ed25519/internal/edwards25519",
+			"Rev": "f3241ce8505855877cc8a9717bd61a0f7c4ea83c"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/ssh",
 			"Rev": "f3241ce8505855877cc8a9717bd61a0f7c4ea83c"
 		},
 		{

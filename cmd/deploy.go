@@ -69,7 +69,7 @@ func createDeploy(appName, teamName, description, appFolder string) error {
 
 	tc := NewTeresa()
 	log.Infof("Getting app info from cluster %s", clusterName)
-	a := tc.GetAppInfo(teamName, appName)
+	a := tc.GetAppInfoOld(teamName, appName)
 	// create and get the archive
 	log.Infof("Generating tarball of %s", appFolder)
 	tar, err := createTempArchiveToUpload(appName, teamName, appFolder)

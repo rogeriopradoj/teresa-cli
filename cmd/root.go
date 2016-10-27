@@ -51,26 +51,36 @@ view the whole configuration anytime by running:
 func Execute() {
 	if cmd, err := RootCmd.ExecuteC(); err != nil {
 		if isUsageError(err) {
-			fmt.Println(err.Error())
+			fmt.Printf("%s\n\n", err.Error())
 			cmd.Usage()
 			os.Exit(1)
 		}
+
+		if isCmdError(err) {
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
+
 		// Hack to print a invalid command for root
 		// Ex.: teresa notvalidcommand
 		if cmd.HasParent() == false {
 			fmt.Println(err)
 			os.Exit(1)
 		}
+
 		// write errors to log for future troubleshooting
 		log.WithField("command", cmd.CommandPath()).WithError(err).Error("error on client")
 
 		// from here below, try to print some usefull information for the user...
-
 		// check if the error is a net error
 		if _, ok := err.(net.Error); ok {
 			fmt.Println("Faield to connect to server, or server is down!!!")
+			os.Exit(1)
 		}
 
+		fmt.Println("Something wrong happened... we collected all necessary data to fix and improve teresa")
+		// FIXME: put here the real log directory
+		fmt.Println("If you want more info, check logs in ...")
 		os.Exit(1)
 	}
 }
@@ -151,6 +161,18 @@ func Usage(cmd *cobra.Command) {
 	fmt.Printf("%s\n%s", cmd.Long, cmd.UsageString())
 }
 
+type defaultClientError interface {
+	Code() int
+	Error() string
+}
+
+func isNotFound(err error) bool {
+	if tErr, ok := err.(defaultClientError); ok && tErr.Code() == 404 {
+		return true
+	}
+	return false
+}
+
 type usageError struct {
 	msg string
 }
@@ -171,6 +193,10 @@ func isUsageError(err error) bool {
 type cmdError struct {
 	msg      string
 	sysError bool
+}
+
+func newCmdError(msg string) error {
+	return &cmdError{msg, false}
 }
 
 func (e cmdError) Error() string    { return e.msg }

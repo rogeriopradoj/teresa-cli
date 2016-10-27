@@ -129,10 +129,19 @@ func (tc TeresaClient) CreateApp(name string, scale int64, teamID int64) (app *m
 	return
 }
 
-// GetApps return apps for a specific team
-func (tc TeresaClient) GetApps() (app []*models.App, err error) {
+// GetApps return all apps for the token
+func (tc TeresaClient) GetApps() (appList []*models.App, err error) {
 	p := apps.NewGetAppsParams()
 	r, err := tc.teresa.Apps.GetApps(p, tc.apiKeyAuthFunc)
+	if err != nil {
+		return nil, err
+	}
+	return r.Payload, nil
+}
+
+func (tc TeresaClient) GetAppInfo(appName string) (app *models.App, err error) {
+	p := apps.NewGetAppDetailsParams().WithAppName(appName)
+	r, err := tc.teresa.Apps.GetAppDetails(p, tc.apiKeyAuthFunc)
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +189,7 @@ func (tc TeresaClient) Me() (user *models.User, err error) {
 }
 
 // GetAppInfo return teamID and appID
-func (tc TeresaClient) GetAppInfo(teamName, appName string) (appInfo AppInfo) {
+func (tc TeresaClient) GetAppInfoOld(teamName, appName string) (appInfo AppInfo) {
 	// me, err := tc.Me()
 	// if err != nil {
 	// 	log.Fatalf("unable to get user information: %s", err)

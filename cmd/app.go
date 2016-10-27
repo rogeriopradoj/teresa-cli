@@ -4,18 +4,20 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/fatih/color"
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 )
 
 // createCmd represents the create command
 var appCmd = &cobra.Command{
-	Use: "app",
+	Use:   "app",
+	Short: "Everything about apps",
 }
 
 var appCreateCmd = &cobra.Command{
-	Use:   "create <name>",
-	Short: "Create an app",
+	Use:   "create <app_name>",
+	Short: "Creates an app",
 	Long: `Creates a new application.
 
 The application name is always required, but team name is only required if you
@@ -52,13 +54,16 @@ are part of more than one team.`,
 
 var appListCmd = &cobra.Command{
 	Use:     "list",
-	Short:   "Get apps",
+	Short:   "List all apps",
 	Long:    "Return all apps with address and team.",
 	Example: "  $ teresa app list",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		tc := NewTeresa()
 		apps, err := tc.GetApps()
 		if err != nil {
+			if isNotFound(err) {
+				return newCmdError("You have no apps")
+			}
 			return err
 		}
 		// rendering app info in a table view
@@ -77,15 +82,89 @@ var appListCmd = &cobra.Command{
 	},
 }
 
+var appInfoCmd = &cobra.Command{
+	Use:     "info <app_name>",
+	Short:   "All infos about the app",
+	Long:    "Return all infos about an specific app, like addresses, scale, auto scale, etc...",
+	Example: "  $ teresa app info foo",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		if len(args) != 1 {
+			return newUsageError("You should provide the name of the app in order to continue")
+		}
+		appName := args[0]
+		tc := NewTeresa()
+		app, err := tc.GetAppInfo(appName)
+		if err != nil {
+			if isNotFound(err) {
+				return newCmdError("App not found")
+			}
+			return err
+		}
+
+		color.New(color.FgCyan, color.Bold).Printf("[%s]\n", *app.Name)
+		bold := color.New(color.Bold).SprintFunc()
+
+		fmt.Println(bold("team:"), *app.Team)
+		fmt.Println(bold("addresses:"))
+		for _, a := range app.AddressList {
+			fmt.Printf("  %s\n", a)
+		}
+		fmt.Println(bold("env vars:"))
+		for _, e := range app.EnvVars {
+			fmt.Printf("  %s=%s\n", *e.Key, *e.Value)
+		}
+		fmt.Println(bold("scale:"), app.Scale)
+		fmt.Println(bold("autoscale:"))
+		fmt.Printf("  %s %d%%\n", bold("cpu:"), *app.AutoScale.CPUTargetUtilization)
+		fmt.Printf("  %s %d\n", bold("max:"), app.AutoScale.Max)
+		fmt.Printf("  %s %d\n", bold("min:"), app.AutoScale.Min)
+		fmt.Println(bold("limits:"))
+		if len(app.Limits.Default) > 0 {
+			fmt.Println(bold("  defaults"))
+			for _, l := range app.Limits.Default {
+				fmt.Printf("    %s %s\n", bold(*l.Resource), *l.Quantity)
+			}
+		}
+		if len(app.Limits.DefaultRequest) > 0 {
+			fmt.Println(bold("  request"))
+			for _, l := range app.Limits.DefaultRequest {
+				fmt.Printf("    %s %s\n", bold(*l.Resource), *l.Quantity)
+			}
+		}
+		if app.HealthCheck != nil && (app.HealthCheck.Liveness != nil || app.HealthCheck.Readiness != nil) {
+			fmt.Println(bold("healthcheck:"))
+			if app.HealthCheck.Liveness != nil {
+				fmt.Println(bold("  liveness:"))
+				fmt.Printf("    %s %s\n", bold("path:"), app.HealthCheck.Liveness.Path)
+				fmt.Printf("    %s %ds\n", bold("period:"), app.HealthCheck.Liveness.PeriodSeconds)
+				fmt.Printf("    %s %ds\n", bold("timeout:"), app.HealthCheck.Liveness.TimeoutSeconds)
+				fmt.Printf("    %s %ds\n", bold("initial delay:"), app.HealthCheck.Liveness.InitialDelaySeconds)
+				fmt.Printf("    %s %d\n", bold("success threshold:"), app.HealthCheck.Liveness.SuccessThreshold)
+				fmt.Printf("    %s %d\n", bold("failure threshold:"), app.HealthCheck.Liveness.FailureThreshold)
+			}
+			if app.HealthCheck.Readiness != nil {
+				fmt.Println(bold("  readiness:"))
+				fmt.Printf("    %s %s\n", bold("path:"), app.HealthCheck.Readiness.Path)
+				fmt.Printf("    %s %ds\n", bold("period:"), app.HealthCheck.Readiness.PeriodSeconds)
+				fmt.Printf("    %s %ds\n", bold("timeout:"), app.HealthCheck.Readiness.TimeoutSeconds)
+				fmt.Printf("    %s %ds\n", bold("initial delay:"), app.HealthCheck.Readiness.InitialDelaySeconds)
+				fmt.Printf("    %s %d\n", bold("success threshold:"), app.HealthCheck.Readiness.SuccessThreshold)
+				fmt.Printf("    %s %d\n", bold("failure threshold:"), app.HealthCheck.Readiness.FailureThreshold)
+			}
+		}
+		return nil
+	},
+}
+
 func init() {
 	// add AppCmd
 	RootCmd.AddCommand(appCmd)
-
 	// App commands
 	appCmd.AddCommand(appCreateCmd)
 	appCmd.AddCommand(appListCmd)
+	appCmd.AddCommand(appInfoCmd)
 
-	appCreateCmd.Flags().StringVar(&teamNameFlag, "team", "", "team name")
+	// appCreateCmd.Flags().StringVar(&teamNameFlag, "team", "", "team name")
 	// appCmdCreate.Flags().IntVar(&appScaleFlag, "scale", 1, "replicas")
 
 }

@@ -49,71 +49,71 @@ to run with the --scale (defaults to 1) option:
 	},
 }
 
-var getAppCmd = &cobra.Command{
-	Use:   "app",
-	Short: "Get app info",
-	Long: `Return informations about the app(s).
-
-Return a list of apps if no name is provided
-
-If the name is provided, all informations about the app will be returned.
-Team name is only required if you are part of more than one team.
-
-eg.:
-
-	$ teresa get app --app my_app_name --team my_team
-`,
-	Run: func(cmd *cobra.Command, args []string) {
-		// tc := NewTeresa()
-		//
-		// if appNameFlag != "" {
-		// 	a := tc.GetAppInfo(teamNameFlag, appNameFlag)
-		//
-		// 	app, err := tc.GetAppDetail(a.TeamID, a.AppID)
-		// 	if err != nil {
-		// 		log.Fatal(err)
-		// 	}
-		//
-		// 	fmt.Printf("\nApp: %s\n", *app.Name)
-		// 	fmt.Printf("Scale: %d\n", *app.Scale)
-		// 	// env vars
-		// 	if len(app.EnvVars) > 0 {
-		// 		fmt.Print("\nEnv Vars:\n")
-		// 		for _, x := range app.EnvVars {
-		// 			fmt.Printf("  %s: %s\n", *x.Key, *x.Value)
-		// 		}
-		// 	}
-		// 	// address
-		// 	if len(app.AddressList) > 0 {
-		// 		fmt.Print("\nAddress:\n")
-		// 		for _, x := range app.AddressList {
-		// 			fmt.Printf("  %s\n", x)
-		// 		}
-		// 	}
-		// 	fmt.Println()
-		//
-		// } else {
-		// 	teamID := tc.GetTeamID(teamNameFlag)
-		// 	apps, err := tc.GetApps(teamID)
-		// 	if err != nil {
-		// 		log.Fatal(err)
-		// 	}
-		//
-		// 	table := tablewriter.NewWriter(os.Stdout)
-		// 	table.SetHeader([]string{"APP", "SCALE", "ADDRESS"})
-		// 	table.SetRowLine(true)
-		// 	table.SetAlignment(tablewriter.ALIGN_LEFT)
-		// 	table.SetRowSeparator("-")
-		// 	table.SetAutoWrapText(false)
-		//
-		// 	for _, a := range apps {
-		// 		r := []string{*a.Name, strconv.Itoa(int(*a.Scale)), strings.Join(a.AddressList, "\n")}
-		// 		table.Append(r)
-		// 	}
-		// 	table.Render()
-		// }
-	},
-}
+// var getAppCmd = &cobra.Command{
+// 	Use:   "app",
+// 	Short: "Get app info",
+// 	Long: `Return informations about the app(s).
+//
+// Return a list of apps if no name is provided
+//
+// If the name is provided, all informations about the app will be returned.
+// Team name is only required if you are part of more than one team.
+//
+// eg.:
+//
+// 	$ teresa get app --app my_app_name --team my_team
+// `,
+// 	Run: func(cmd *cobra.Command, args []string) {
+// 		// tc := NewTeresa()
+// 		//
+// 		// if appNameFlag != "" {
+// 		// 	a := tc.GetAppInfo(teamNameFlag, appNameFlag)
+// 		//
+// 		// 	app, err := tc.GetAppDetail(a.TeamID, a.AppID)
+// 		// 	if err != nil {
+// 		// 		log.Fatal(err)
+// 		// 	}
+// 		//
+// 		// 	fmt.Printf("\nApp: %s\n", *app.Name)
+// 		// 	fmt.Printf("Scale: %d\n", *app.Scale)
+// 		// 	// env vars
+// 		// 	if len(app.EnvVars) > 0 {
+// 		// 		fmt.Print("\nEnv Vars:\n")
+// 		// 		for _, x := range app.EnvVars {
+// 		// 			fmt.Printf("  %s: %s\n", *x.Key, *x.Value)
+// 		// 		}
+// 		// 	}
+// 		// 	// address
+// 		// 	if len(app.AddressList) > 0 {
+// 		// 		fmt.Print("\nAddress:\n")
+// 		// 		for _, x := range app.AddressList {
+// 		// 			fmt.Printf("  %s\n", x)
+// 		// 		}
+// 		// 	}
+// 		// 	fmt.Println()
+// 		//
+// 		// } else {
+// 		// 	teamID := tc.GetTeamID(teamNameFlag)
+// 		// 	apps, err := tc.GetApps(teamID)
+// 		// 	if err != nil {
+// 		// 		log.Fatal(err)
+// 		// 	}
+// 		//
+// 		// 	table := tablewriter.NewWriter(os.Stdout)
+// 		// 	table.SetHeader([]string{"APP", "SCALE", "ADDRESS"})
+// 		// 	table.SetRowLine(true)
+// 		// 	table.SetAlignment(tablewriter.ALIGN_LEFT)
+// 		// 	table.SetRowSeparator("-")
+// 		// 	table.SetAutoWrapText(false)
+// 		//
+// 		// 	for _, a := range apps {
+// 		// 		r := []string{*a.Name, strconv.Itoa(int(*a.Scale)), strings.Join(a.AddressList, "\n")}
+// 		// 		table.Append(r)
+// 		// 	}
+// 		// 	table.Render()
+// 		// }
+// 	},
+// }
 
 var setEnvVarCmd = &cobra.Command{
 	Use:   "env [KEY=value, ...]",
@@ -166,7 +166,7 @@ The team name is only required if you are part of more than one.
 
 		tc := NewTeresa()
 		// FIXME: change this to return error if any
-		a := tc.GetAppInfo(teamNameFlag, appNameFlag)
+		a := tc.GetAppInfoOld(teamNameFlag, appNameFlag)
 
 		// partial update envvars... jsonpatch
 		ops := []*models.PatchAppRequest{&op}
@@ -225,7 +225,7 @@ The team name is only required if you are part of more than one.
 		}
 		tc := NewTeresa()
 		// FIXME: change this to return error if any
-		a := tc.GetAppInfo(teamNameFlag, appNameFlag)
+		a := tc.GetAppInfoOld(teamNameFlag, appNameFlag)
 
 		// partial update envvars... jsonpatch
 		ops := []*models.PatchAppRequest{&op}
@@ -242,9 +242,9 @@ func init() {
 	createAppCmd.Flags().StringVar(&teamNameFlag, "team", "", "team name")
 	createAppCmd.Flags().IntVar(&appScaleFlag, "scale", 1, "replicas")
 
-	getCmd.AddCommand(getAppCmd)
-	getAppCmd.Flags().StringVar(&appNameFlag, "app", "", "app name")
-	getAppCmd.Flags().StringVar(&teamNameFlag, "team", "", "team name")
+	// getCmd.AddCommand(getAppCmd)
+	// getAppCmd.Flags().StringVar(&appNameFlag, "app", "", "app name")
+	// getAppCmd.Flags().StringVar(&teamNameFlag, "team", "", "team name")
 
 	setCmd.AddCommand(setEnvVarCmd)
 	setEnvVarCmd.Flags().StringVar(&appNameFlag, "app", "", "app name [required]")
