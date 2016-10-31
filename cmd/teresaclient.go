@@ -241,7 +241,7 @@ func (tc TeresaClient) GetTeams() (teamsList []*models.Team, err error) {
 	if err != nil {
 		return nil, err
 	}
-	return r.Payload.Items, nil
+	return r.Payload, nil
 }
 
 // CreateDeploy creates a new deploy
