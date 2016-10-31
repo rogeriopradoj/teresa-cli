@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/fatih/color"
+	"github.com/luizalabs/tapi/models"
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 )
@@ -16,39 +17,99 @@ var appCmd = &cobra.Command{
 }
 
 var appCreateCmd = &cobra.Command{
-	Use:   "create <app_name>",
-	Short: "Creates an app",
+	Use:   "create <name>",
+	Short: "Creates a new app.",
 	Long: `Creates a new application.
 
-The application name is always required, but team name is only required if you
-are part of more than one team.`,
-	Example: `  teresa app create foo
+You should provide the unique name for the App and the team name in order to create a new App.
+Remember, all team members can view and modify this newly created app.
 
-  teresa app create foo --team bar
+The app name must follow this rules:
+  - must contain only letters and the special character "-"
+  - must start and finish with a letter
+  - something like: foo or foo-bar`,
+	Example: `  $ teresa app create foo --team bar
 
-  You can optionally specify the number of containers/pods you want your app
-  to run with the --scale (defaults to 1) option:
+  With scale rules... min 2, max 10 pods, scalling with a cpu target of 70%
+  $ teresa create foo --team bar --scale-min 2 --scale-max 10 --scale-cpu 70
 
-  teresa app create foo --team bar --scale 4`,
-	Run: func(cmd *cobra.Command, args []string) {
+  With specific cpu and memory size...
+  $ teresa create foo --team bar --cpu 400m --memory 1Gi
 
-		fmt.Printf("=> %+v\n", "Entrou aqui")
+  With all flags...
+  $ teresa app create foo --team bar --cpu 400m --memory 1Gi --scale-min 2 --scale-max 10 --scale-cpu 70`,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		// Getting app name
+		if len(args) != 1 {
+			return newUsageError("You should provide the name of the app")
+		}
+		appName := args[0]
+		// Getting flags
+		team, _ := cmd.Flags().GetString("team")
+		targetCPU, _ := cmd.Flags().GetInt64("scale-cpu")
+		scaleMax, _ := cmd.Flags().GetInt64("scale-max")
+		scaleMin, _ := cmd.Flags().GetInt64("scale-min")
+		cpu, _ := cmd.Flags().GetString("cpu")
+		memory, _ := cmd.Flags().GetString("memory")
+		if team == "" {
+			return newUsageError("You should provide the name of the team to continue")
+		}
+		// creating app params
+		app := models.AppIn{}
+		app.Name = &appName
+		app.Team = &team
+		app.Scale = scaleMin
+		// app rollint update
+		msurge := "30%"
+		munavailable := "30%"
+		app.RollingUpdate = &models.AppInRollingUpdate{
+			MaxSurge:       &msurge,
+			MaxUnavailable: &munavailable,
+		}
+		// app limits
+		cpuString := "cpu"
+		memString := "memory"
+		app.Limits = &models.AppInLimits{
+			Default: []*models.LimitRangeQuantity{
+				&models.LimitRangeQuantity{
+					Resource: &cpuString,
+					Quantity: &cpu,
+				},
+				&models.LimitRangeQuantity{
+					Resource: &memString,
+					Quantity: &memory,
+				},
+			},
+			DefaultRequest: []*models.LimitRangeQuantity{
+				&models.LimitRangeQuantity{
+					Resource: &cpuString,
+					Quantity: &cpu,
+				},
+				&models.LimitRangeQuantity{
+					Resource: &memString,
+					Quantity: &memory,
+				},
+			},
+		}
+		// autoscale
+		app.AutoScale = &models.AutoScale{
+			CPUTargetUtilization: &targetCPU,
+			Min:                  scaleMin,
+			Max:                  scaleMax,
+		}
 
-		// if len(args) == 0 {
-		// 	Usage(cmd)
-		// 	return
-		// }
-		// if appScaleFlag == 0 {
-		// 	Fatalf(cmd, "at least one replica is required")
-		// }
-		//
-		// tc := NewTeresa()
-		// teamID := tc.GetTeamID(teamNameFlag)
-		// app, err := tc.CreateApp(args[0], int64(appScaleFlag), teamID)
-		// if err != nil {
-		// 	log.Fatal(err)
-		// }
-		// log.Infof("App created. Name: %s Replicas: %d", *app.Name, *app.Scale)
+		tc := NewTeresa()
+		_, err := tc.CreateApp(app)
+		if err != nil {
+			if isUnauthorized(err) {
+				return newCmdErrorf(`You are unauthorized to create an app for the team "%s" team, or the team doesn't exists`, team)
+			} else if isConflicted(err) {
+				return newCmdErrorf(`App "%s" already exists`, appName)
+			}
+			return err
+		}
+		fmt.Printf("App \"%s\" created with success\n", *app.Name)
+		return nil
 	},
 }
 
@@ -73,8 +134,12 @@ var appListCmd = &cobra.Command{
 		table.SetAlignment(tablewriter.ALIGN_LEFT)
 		table.SetRowSeparator("-")
 		table.SetAutoWrapText(false)
-		for _, a := range apps {
-			r := []string{*a.Team, *a.Name, a.AddressList[0]}
+		for _, app := range apps {
+			a := ""
+			if len(app.AddressList) > 0 {
+				a = app.AddressList[0]
+			}
+			r := []string{*app.Team, *app.Name, a}
 			table.Append(r)
 		}
 		table.Render()
@@ -83,7 +148,7 @@ var appListCmd = &cobra.Command{
 }
 
 var appInfoCmd = &cobra.Command{
-	Use:     "info <app_name>",
+	Use:     "info <name>",
 	Short:   "All infos about the app",
 	Long:    "Return all infos about an specific app, like addresses, scale, auto scale, etc...",
 	Example: "  $ teresa app info foo",
@@ -105,13 +170,17 @@ var appInfoCmd = &cobra.Command{
 		bold := color.New(color.Bold).SprintFunc()
 
 		fmt.Println(bold("team:"), *app.Team)
-		fmt.Println(bold("addresses:"))
-		for _, a := range app.AddressList {
-			fmt.Printf("  %s\n", a)
+		if len(app.AddressList) > 0 {
+			fmt.Println(bold("addresses:"))
+			for _, a := range app.AddressList {
+				fmt.Printf("  %s\n", a)
+			}
 		}
-		fmt.Println(bold("env vars:"))
-		for _, e := range app.EnvVars {
-			fmt.Printf("  %s=%s\n", *e.Key, *e.Value)
+		if len(app.EnvVars) > 0 {
+			fmt.Println(bold("env vars:"))
+			for _, e := range app.EnvVars {
+				fmt.Printf("  %s=%s\n", *e.Key, *e.Value)
+			}
 		}
 		fmt.Println(bold("scale:"), app.Scale)
 		fmt.Println(bold("autoscale:"))
@@ -164,7 +233,12 @@ func init() {
 	appCmd.AddCommand(appListCmd)
 	appCmd.AddCommand(appInfoCmd)
 
-	// appCreateCmd.Flags().StringVar(&teamNameFlag, "team", "", "team name")
-	// appCmdCreate.Flags().IntVar(&appScaleFlag, "scale", 1, "replicas")
+	// Create App flags
+	appCreateCmd.Flags().String("team", "", "team owner of the app")
+	appCreateCmd.Flags().Int64("scale-min", 1, "auto scale min size")
+	appCreateCmd.Flags().Int64("scale-max", 2, "auto scale max size")
+	appCreateCmd.Flags().Int64("scale-cpu", 70, "auto scale target cpu percentage to scale")
+	appCreateCmd.Flags().String("cpu", "200m", "cpu size of the container")
+	appCreateCmd.Flags().String("memory", "512Mi", "cpu size of the container")
 
 }

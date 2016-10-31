@@ -117,16 +117,13 @@ func (tc TeresaClient) DeleteTeam(ID int64) error {
 }
 
 // CreateApp creates an user
-func (tc TeresaClient) CreateApp(name string, scale int64, teamID int64) (app *models.App, err error) {
-	// params := apps.NewCreateAppParams()
-	// params.TeamID = teamID
-	// params.WithBody(&models.App{Name: &name, Scale: &scale})
-	// r, err := tc.teresa.Apps.CreateApp(params, tc.apiKeyAuthFunc)
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// return r.Payload, nil
-	return
+func (tc TeresaClient) CreateApp(app models.AppIn) (*models.App, error) {
+	params := apps.NewCreateAppParams().WithBody(&app)
+	r, err := tc.teresa.Apps.CreateApp(params, tc.apiKeyAuthFunc)
+	if err != nil {
+		return nil, err
+	}
+	return r.Payload, nil
 }
 
 // GetApps return all apps for the token

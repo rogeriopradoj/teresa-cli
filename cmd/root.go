@@ -68,8 +68,8 @@ func Execute() {
 			os.Exit(1)
 		}
 
-		// write errors to log for future troubleshooting
-		log.WithField("command", cmd.CommandPath()).WithError(err).Error("error on client")
+		// writting errors to log for future troubleshooting
+		log.WithField("command", cmd.CommandPath()).WithError(err).Error("generic error")
 
 		// from here below, try to print some usefull information for the user...
 		// check if the error is a net error
@@ -97,7 +97,9 @@ func init() {
 
 	// change the suggestion distance of the commands
 	RootCmd.SuggestionsMinimumDistance = 3
-	RootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "config file")
+	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file")
+	RootCmd.PersistentFlags().BoolVar(&debugFlag, "debug", false, "debug mode")
+	RootCmd.PersistentFlags().MarkHidden("debug")
 }
 
 func initLog() {
@@ -132,7 +134,7 @@ func initConfig() {
 	}
 	viper.SetConfigFile(cfgFile)
 	// defaults
-	viper.SetDefault("debug", false)
+	viper.SetDefault("debug", debugFlag)
 	// get from ENV
 	viper.AutomaticEnv()
 	if err := viper.ReadInConfig(); err != nil && !os.IsNotExist(err) {
@@ -173,6 +175,20 @@ func isNotFound(err error) bool {
 	return false
 }
 
+func isUnauthorized(err error) bool {
+	if tErr, ok := err.(defaultClientError); ok && tErr.Code() == 401 {
+		return true
+	}
+	return false
+}
+
+func isConflicted(err error) bool {
+	if tErr, ok := err.(defaultClientError); ok && tErr.Code() == 409 {
+		return true
+	}
+	return false
+}
+
 type usageError struct {
 	msg string
 }
@@ -197,6 +213,9 @@ type cmdError struct {
 
 func newCmdError(msg string) error {
 	return &cmdError{msg, false}
+}
+func newCmdErrorf(format string, a ...interface{}) error {
+	return &cmdError{fmt.Sprintf(format, a...), false}
 }
 
 func (e cmdError) Error() string    { return e.msg }
