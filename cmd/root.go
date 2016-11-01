@@ -168,25 +168,27 @@ type defaultClientError interface {
 	Error() string
 }
 
-func isNotFound(err error) bool {
-	if tErr, ok := err.(defaultClientError); ok && tErr.Code() == 404 {
+func isErrorCode(err error, code int) bool {
+	if tErr, ok := err.(defaultClientError); ok && tErr.Code() == code {
 		return true
 	}
 	return false
+}
+
+func isBadRequest(err error) bool {
+	return isErrorCode(err, 400)
+}
+
+func isNotFound(err error) bool {
+	return isErrorCode(err, 404)
 }
 
 func isUnauthorized(err error) bool {
-	if tErr, ok := err.(defaultClientError); ok && tErr.Code() == 401 {
-		return true
-	}
-	return false
+	return isErrorCode(err, 401)
 }
 
 func isConflicted(err error) bool {
-	if tErr, ok := err.(defaultClientError); ok && tErr.Code() == 409 {
-		return true
-	}
-	return false
+	return isErrorCode(err, 409)
 }
 
 type usageError struct {

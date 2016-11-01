@@ -258,15 +258,16 @@ func (tc TeresaClient) CreateDeploy(teamID, appID int64, description string, tar
 }
 
 // PartialUpdateApp partial updates app... for now, updates only envvars
-func (tc TeresaClient) PartialUpdateApp(teamID, appID int64, operations []*models.PatchAppRequest) error {
-	// p := apps.NewPartialUpdateAppParams()
-	// p.TeamID = teamID
-	// p.AppID = appID
-	// p.Body = operations
-	//
-	// _, err := tc.teresa.Apps.PartialUpdateApp(p, tc.apiKeyAuthFunc)
-	// return err
-	return nil
+func (tc TeresaClient) PartialUpdateApp(appName string, operations []*models.PatchAppRequest) (*models.App, error) {
+	p := apps.NewPartialUpdateAppParams()
+	p.AppName = appName
+	p.Body = operations
+	r, err := tc.teresa.Apps.PartialUpdateApp(p, tc.apiKeyAuthFunc)
+	if err != nil {
+		return nil, err
+	}
+
+	return r.Payload, nil
 }
 
 // AddUserToTeam adds a user (by email) to a team.

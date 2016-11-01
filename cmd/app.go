@@ -1,8 +1,10 @@
 package cmd
 
 import (
+	"bufio"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/fatih/color"
 	"github.com/luizalabs/tapi/models"
@@ -225,6 +227,81 @@ var appInfoCmd = &cobra.Command{
 	},
 }
 
+var appEnvSetCmd = &cobra.Command{
+	Use:   "env-set [KEY=value, ...]",
+	Short: "Set an env var for the app",
+	Long: `Create or update an environment variable for the app.
+
+You can add a new environment variable for the app, or update if it already exists.
+
+WARNING:
+  If you need to set more than one env var to the application, provide all at once.
+  Every time this command is called, the application needs to be restared.`,
+	Example: `  To add an new env var called "FOO":
+
+  $ teresa app env-set FOO=bar --app myapp
+
+  You can also provide more than one env var at a time:
+
+  $ teresa app env-set FOO=bar BAR=foo --app myapp`,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		appName, _ := cmd.Flags().GetString("app")
+		if appName == "" {
+			return newUsageError("You should provide the name of the app in order to continue")
+		}
+		if len(args) == 0 {
+			return newUsageError("You should provide env vars following the examples...")
+		}
+		// parsing env vars from args...
+		evars := make([]*models.PatchAppEnvVar, len(args))
+		for i, s := range args {
+			x := strings.SplitN(s, "=", 2)
+			if len(x) != 2 {
+				return newUsageError("Env vars must be in the format FOO=bar")
+			}
+			evars[i] = &models.PatchAppEnvVar{
+				Key:   &x[0],
+				Value: x[1],
+			}
+		}
+		// creating body for request
+		action := "add"
+		path := "/envvars"
+		op := &models.PatchAppRequest{
+			Op:    &action,
+			Path:  &path,
+			Value: evars,
+		}
+		fmt.Printf("Setting env vars and %s %s...\n", color.YellowString("restarting"), color.CyanString(`"%s"`, appName))
+		for _, e := range evars {
+			fmt.Printf("  %s: %s\n", *e.Key, e.Value)
+		}
+		force, _ := cmd.Flags().GetBool("force")
+		if force == false {
+			fmt.Print("Are you sure? (yes/NO)? ")
+			// Waiting for the user answer...
+			s, _ := bufio.NewReader(os.Stdin).ReadString('\n')
+			s = strings.ToLower(strings.TrimRight(s, "\r\n"))
+			if s != "yes" {
+				return nil
+			}
+		}
+		// Updating env vars
+		tc := NewTeresa()
+		_, err := tc.PartialUpdateApp(appName, []*models.PatchAppRequest{op})
+		if err != nil {
+			if isNotFound(err) {
+				return newCmdError("App not found")
+			} else if isBadRequest(err) {
+				return newCmdError("Manualy change system env vars are not allowed")
+			}
+			return err
+		}
+		fmt.Println("Env vars updated with success")
+		return nil
+	},
+}
+
 func init() {
 	// add AppCmd
 	RootCmd.AddCommand(appCmd)
@@ -232,6 +309,7 @@ func init() {
 	appCmd.AddCommand(appCreateCmd)
 	appCmd.AddCommand(appListCmd)
 	appCmd.AddCommand(appInfoCmd)
+	appCmd.AddCommand(appEnvSetCmd)
 
 	// Create App flags
 	appCreateCmd.Flags().String("team", "", "team owner of the app")
@@ -240,5 +318,8 @@ func init() {
 	appCreateCmd.Flags().Int64("scale-cpu", 70, "auto scale target cpu percentage to scale")
 	appCreateCmd.Flags().String("cpu", "200m", "cpu size of the container")
 	appCreateCmd.Flags().String("memory", "512Mi", "cpu size of the container")
+
+	appEnvSetCmd.Flags().String("app", "", "app name")
+	appEnvSetCmd.Flags().Bool("force", false, "set env vars asking to continue")
 
 }

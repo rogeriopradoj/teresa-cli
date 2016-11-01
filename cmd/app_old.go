@@ -1,9 +1,6 @@
 package cmd
 
 import (
-	"strings"
-
-	"github.com/luizalabs/tapi/models"
 	_ "github.com/prometheus/common/log"
 	"github.com/spf13/cobra"
 )
@@ -138,43 +135,43 @@ The application name is always required.
 The team name is only required if you are part of more than one.
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		if appNameFlag == "" || len(args) == 0 {
-			Usage(cmd)
-			return
-		}
-		// parse args to env vars
-		evars := make([]*models.PatchAppEnvVar, len(args))
-		for i, s := range args {
-			x := strings.SplitN(s, "=", 2)
-			if len(x) != 2 {
-				Fatalf(cmd, "Env vars must be in the format FOO=bar")
-			}
-			e := models.PatchAppEnvVar{
-				Key:   &x[0],
-				Value: x[1],
-			}
-			evars[i] = &e
-		}
-
-		action := "add"
-		path := "/envvars"
-		op := models.PatchAppRequest{
-			Op:    &action,
-			Path:  &path,
-			Value: evars,
-		}
-
-		tc := NewTeresa()
-		// FIXME: change this to return error if any
-		a := tc.GetAppInfoOld(teamNameFlag, appNameFlag)
-
-		// partial update envvars... jsonpatch
-		ops := []*models.PatchAppRequest{&op}
-		err := tc.PartialUpdateApp(a.TeamID, a.AppID, ops)
-		if err != nil {
-			log.Fatal(err)
-		}
-		log.Info("App env vars updated successfully")
+		// if appNameFlag == "" || len(args) == 0 {
+		// 	Usage(cmd)
+		// 	return
+		// }
+		// // parse args to env vars
+		// evars := make([]*models.PatchAppEnvVar, len(args))
+		// for i, s := range args {
+		// 	x := strings.SplitN(s, "=", 2)
+		// 	if len(x) != 2 {
+		// 		Fatalf(cmd, "Env vars must be in the format FOO=bar")
+		// 	}
+		// 	e := models.PatchAppEnvVar{
+		// 		Key:   &x[0],
+		// 		Value: x[1],
+		// 	}
+		// 	evars[i] = &e
+		// }
+		//
+		// action := "add"
+		// path := "/envvars"
+		// op := models.PatchAppRequest{
+		// 	Op:    &action,
+		// 	Path:  &path,
+		// 	Value: evars,
+		// }
+		//
+		// tc := NewTeresa()
+		// // FIXME: change this to return error if any
+		// a := tc.GetAppInfoOld(teamNameFlag, appNameFlag)
+		//
+		// // partial update envvars... jsonpatch
+		// ops := []*models.PatchAppRequest{&op}
+		// err := tc.PartialUpdateApp(a.TeamID, a.AppID, ops)
+		// if err != nil {
+		// 	log.Fatal(err)
+		// }
+		// log.Info("App env vars updated successfully")
 		return
 	},
 }
@@ -202,38 +199,38 @@ The application name is always required.
 The team name is only required if you are part of more than one.
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		if appNameFlag == "" || len(args) == 0 {
-			Usage(cmd)
-			return
-		}
-		// parse args to env vars
-		evars := make([]*models.PatchAppEnvVar, len(args))
-		for i, k := range args {
-			key := k
-			e := models.PatchAppEnvVar{
-				Key: &key,
-			}
-			evars[i] = &e
-		}
-
-		action := "remove"
-		path := "/envvars"
-		op := models.PatchAppRequest{
-			Op:    &action,
-			Path:  &path,
-			Value: evars,
-		}
-		tc := NewTeresa()
-		// FIXME: change this to return error if any
-		a := tc.GetAppInfoOld(teamNameFlag, appNameFlag)
-
-		// partial update envvars... jsonpatch
-		ops := []*models.PatchAppRequest{&op}
-		err := tc.PartialUpdateApp(a.TeamID, a.AppID, ops)
-		if err != nil {
-			log.Fatal(err)
-		}
-		log.Info("App env var(s) removed successfully")
+		// if appNameFlag == "" || len(args) == 0 {
+		// 	Usage(cmd)
+		// 	return
+		// }
+		// // parse args to env vars
+		// evars := make([]*models.PatchAppEnvVar, len(args))
+		// for i, k := range args {
+		// 	key := k
+		// 	e := models.PatchAppEnvVar{
+		// 		Key: &key,
+		// 	}
+		// 	evars[i] = &e
+		// }
+		//
+		// action := "remove"
+		// path := "/envvars"
+		// op := models.PatchAppRequest{
+		// 	Op:    &action,
+		// 	Path:  &path,
+		// 	Value: evars,
+		// }
+		// tc := NewTeresa()
+		// // FIXME: change this to return error if any
+		// a := tc.GetAppInfoOld(teamNameFlag, appNameFlag)
+		//
+		// // partial update envvars... jsonpatch
+		// ops := []*models.PatchAppRequest{&op}
+		// err := tc.PartialUpdateApp(a.TeamID, a.AppID, ops)
+		// if err != nil {
+		// 	log.Fatal(err)
+		// }
+		// log.Info("App env var(s) removed successfully")
 	},
 }
 
