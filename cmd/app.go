@@ -229,7 +229,7 @@ var appInfoCmd = &cobra.Command{
 
 var appEnvSetCmd = &cobra.Command{
 	Use:   "env-set [KEY=value, ...]",
-	Short: "Set an env var for the app",
+	Short: "Set env vars for the app",
 	Long: `Create or update an environment variable for the app.
 
 You can add a new environment variable for the app, or update if it already exists.
@@ -302,6 +302,80 @@ WARNING:
 	},
 }
 
+var appEnvUnSetCmd = &cobra.Command{
+	Use:   "env-unset [KEY, ...]",
+	Short: "Unset env vars for the app",
+	Long: `Unset an environment variable for the app.
+
+You can remove one or more environment variables from the application.
+
+WARNING:
+  If you need to unset more than one env var from the application, provide all at once.
+  Every time this command is called, the application needs to be restarted.`,
+	Example: `  To add an new env var called "FOO":
+
+To unset an env var called "FOO":
+
+  $ teresa app env-unset FOO --app myapp
+
+You can also provide more than one env var at a time:
+
+  $ teresa app env-unset FOO BAR --app myapp`,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		appName, _ := cmd.Flags().GetString("app")
+		if appName == "" {
+			return newUsageError("You should provide the name of the app in order to continue")
+		}
+		if len(args) == 0 {
+			return newUsageError("You should provide env vars following the examples...")
+		}
+		// parsing env vars from args...
+		evars := make([]*models.PatchAppEnvVar, len(args))
+		for i, k := range args {
+			key := k
+			e := models.PatchAppEnvVar{
+				Key: &key,
+			}
+			evars[i] = &e
+		}
+		// creating body for request
+		action := "remove"
+		path := "/envvars"
+		op := &models.PatchAppRequest{
+			Op:    &action,
+			Path:  &path,
+			Value: evars,
+		}
+		fmt.Printf("Unsetting env vars and %s %s...\n", color.YellowString("restarting"), color.CyanString(`"%s"`, appName))
+		for _, e := range evars {
+			fmt.Printf("  %s\n", *e.Key)
+		}
+		force, _ := cmd.Flags().GetBool("force")
+		if force == false {
+			fmt.Print("Are you sure? (yes/NO)? ")
+			// Waiting for the user answer...
+			s, _ := bufio.NewReader(os.Stdin).ReadString('\n')
+			s = strings.ToLower(strings.TrimRight(s, "\r\n"))
+			if s != "yes" {
+				return nil
+			}
+		}
+		// Updating env vars
+		tc := NewTeresa()
+		_, err := tc.PartialUpdateApp(appName, []*models.PatchAppRequest{op})
+		if err != nil {
+			if isNotFound(err) {
+				return newCmdError("App not found")
+			} else if isBadRequest(err) {
+				return newCmdError("Manualy change system env vars are not allowed")
+			}
+			return err
+		}
+		fmt.Println("Env vars updated with success")
+		return nil
+	},
+}
+
 func init() {
 	// add AppCmd
 	RootCmd.AddCommand(appCmd)
@@ -310,7 +384,7 @@ func init() {
 	appCmd.AddCommand(appListCmd)
 	appCmd.AddCommand(appInfoCmd)
 	appCmd.AddCommand(appEnvSetCmd)
-
+	appCmd.AddCommand(appEnvUnSetCmd)
 	// Create App flags
 	appCreateCmd.Flags().String("team", "", "team owner of the app")
 	appCreateCmd.Flags().Int64("scale-min", 1, "auto scale min size")
@@ -318,8 +392,10 @@ func init() {
 	appCreateCmd.Flags().Int64("scale-cpu", 70, "auto scale target cpu percentage to scale")
 	appCreateCmd.Flags().String("cpu", "200m", "cpu size of the container")
 	appCreateCmd.Flags().String("memory", "512Mi", "cpu size of the container")
-
+	// App set env vars
 	appEnvSetCmd.Flags().String("app", "", "app name")
-	appEnvSetCmd.Flags().Bool("force", false, "set env vars asking to continue")
-
+	appEnvSetCmd.Flags().Bool("force", false, "set env vars without warning")
+	// App unset env vars
+	appEnvUnSetCmd.Flags().String("app", "", "app name")
+	appEnvUnSetCmd.Flags().Bool("force", false, "unset env vars without warning")
 }
