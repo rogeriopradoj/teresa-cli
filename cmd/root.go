@@ -174,21 +174,20 @@ func isErrorCode(err error, code int) bool {
 	}
 	return false
 }
-
 func isBadRequest(err error) bool {
 	return isErrorCode(err, 400)
 }
-
-func isNotFound(err error) bool {
-	return isErrorCode(err, 404)
-}
-
 func isUnauthorized(err error) bool {
 	return isErrorCode(err, 401)
 }
-
+func isNotFound(err error) bool {
+	return isErrorCode(err, 404)
+}
 func isConflicted(err error) bool {
 	return isErrorCode(err, 409)
+}
+func isUnprocessableEntity(err error) bool {
+	return isErrorCode(err, 422)
 }
 
 type usageError struct {

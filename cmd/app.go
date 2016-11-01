@@ -12,7 +12,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// createCmd represents the create command
 var appCmd = &cobra.Command{
 	Use:   "app",
 	Short: "Everything about apps",

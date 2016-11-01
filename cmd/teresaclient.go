@@ -272,14 +272,14 @@ func (tc TeresaClient) PartialUpdateApp(appName string, operations []*models.Pat
 
 // AddUserToTeam adds a user (by email) to a team.
 // if the user is already part of the team, returns error
-func (tc TeresaClient) AddUserToTeam(team, userEmail string) *teams.AddUserToTeamDefault {
+func (tc TeresaClient) AddUserToTeam(teamName, userEmail string) (team *models.Team, err error) {
 	p := teams.NewAddUserToTeamParams()
-	p.TeamName = team
+	p.TeamName = teamName
 	email := strfmt.Email(userEmail)
 	p.User.Email = &email
-	_, err := tc.teresa.Teams.AddUserToTeam(p, tc.apiKeyAuthFunc)
+	r, err := tc.teresa.Teams.AddUserToTeam(p, tc.apiKeyAuthFunc)
 	if err != nil {
-		return err.(*teams.AddUserToTeamDefault)
+		return nil, err
 	}
-	return nil
+	return r.Payload, nil
 }
