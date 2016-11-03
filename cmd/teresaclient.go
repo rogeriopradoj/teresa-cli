@@ -15,6 +15,7 @@ import (
 	apiclient "github.com/luizalabs/tapi/client"
 	"github.com/luizalabs/tapi/client/apps"
 	"github.com/luizalabs/tapi/client/auth"
+	"github.com/luizalabs/tapi/client/deployments"
 	"github.com/luizalabs/tapi/client/teams"
 	"github.com/luizalabs/tapi/client/users"
 	"github.com/luizalabs/tapi/models"
@@ -136,6 +137,7 @@ func (tc TeresaClient) GetApps() (appList []*models.App, err error) {
 	return r.Payload, nil
 }
 
+// GetAppInfo returns all info about the app
 func (tc TeresaClient) GetAppInfo(appName string) (app *models.App, err error) {
 	p := apps.NewGetAppDetailsParams().WithAppName(appName)
 	r, err := tc.teresa.Apps.GetAppDetails(p, tc.apiKeyAuthFunc)
@@ -242,19 +244,17 @@ func (tc TeresaClient) GetTeams() (teamsList []*models.Team, err error) {
 }
 
 // CreateDeploy creates a new deploy
-func (tc TeresaClient) CreateDeploy(teamID, appID int64, description string, tarBall *os.File, writer io.Writer) (io.Writer, error) {
-	// p := deployments.NewCreateDeploymentParams()
-	// p.TeamID = teamID
-	// p.AppID = appID
-	// p.Description = &description
-	// p.AppTarball = *tarBall
-	//
-	// r, err := tc.teresa.Deployments.CreateDeployment(p, tc.apiKeyAuthFunc, writer)
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// return r.Payload, err
-	return nil, nil
+func (tc TeresaClient) CreateDeploy(appName, deployDescription string, tarBall *os.File, writer io.Writer) error {
+	p := deployments.NewCreateDeploymentParams()
+	p.AppName = appName
+	p.AppTarball = *tarBall
+	p.Description = &deployDescription
+
+	_, err := tc.teresa.Deployments.CreateDeployment(p, tc.apiKeyAuthFunc, writer)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // PartialUpdateApp partial updates app... for now, updates only envvars

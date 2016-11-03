@@ -1,120 +1,118 @@
 package cmd
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
-	"io"
 	"os"
 	"path/filepath"
 	"strings"
 
+	"github.com/fatih/color"
 	"github.com/jhoonb/archivex"
 	"github.com/satori/go.uuid"
 	"github.com/spf13/cobra"
 )
 
 var deployCmd = &cobra.Command{
-	Use:   "deploy APP_FOLDER",
+	Use:   "deploy <app folder>",
 	Short: "Deploy an app",
-	Long: `Deploy an application.
-
-To deploy an app you have to pass it's name, the team the app
-belongs and the path to the source code. You might want to
-describe your deployments through --description, as that'll
-eventually help on rollbacks.
-
-eg.:
-
-  $ teresa deploy . --app webapi --team site --description "release 1.2 with new checkout"
-	`,
-	Run: func(cmd *cobra.Command, args []string) {
-		if appNameFlag == "" && len(args) == 0 {
-			Usage(cmd)
-			return
+	// 	Long: `Deploy an application.
+	//
+	// To deploy an app you have to pass it's name, the team the app
+	// belongs and the path to the source code. You might want to
+	// describe your deployments through --description, as that'll
+	// eventually help on rollbacks.
+	//
+	// eg.:
+	//
+	//   $ teresa deploy . --app webapi --team site --description "release 1.2 with new checkout"
+	// 	`,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cluster, err := getCurrentClusterName()
+		if err != nil {
+			return newCmdError("You have to select a cluster first, check the config help: teresa config")
 		}
-		if appNameFlag == "" {
-			Fatalf(cmd, "app name required")
+		if len(args) != 1 {
+			return newUsageError("You should provide the app folder in order to continue")
 		}
-		if len(args) == 0 || (len(args) > 0 && args[0] == "") {
-			Fatalf(cmd, "app folder required")
+		appFolder := args[0]
+		appName, _ := cmd.Flags().GetString("app")
+		deployDescription, _ := cmd.Flags().GetString("description")
+		// showing warning message to the user
+		fmt.Printf("Deploying app %s to the cluster %s...\n", color.CyanString(`"%s"`, appName), color.YellowString(`"%s"`, cluster))
+		noinput, _ := cmd.Flags().GetBool("no-input")
+		if noinput == false {
+			fmt.Print("Are you sure? (yes/NO)? ")
+			// Waiting for the user answer...
+			s, _ := bufio.NewReader(os.Stdin).ReadString('\n')
+			s = strings.ToLower(strings.TrimRight(s, "\r\n"))
+			if s != "yes" {
+				return nil
+			}
 		}
-		createDeploy(appNameFlag, teamNameFlag, descriptionFlag, args[0])
+
+		// create and get the archive
+		fmt.Println("Generating tarball of:", appFolder)
+		tarPath, err := createTempArchiveToUpload(appName, appFolder)
+		if err != nil {
+			// TODO: check what happen when the app folder is not valid
+			return err
+		}
+		file, err := os.Open(*tarPath)
+		if err != nil {
+			return err
+		}
+		defer file.Close()
+
+		tc := NewTeresa()
+		err = tc.CreateDeploy(appName, deployDescription, file, os.Stdout)
+		if err != nil {
+			return err
+		}
+		return nil
 	},
 }
 
-// Writer to be used on deployment, as Write() is very specific and
-// should be implemented some other way -- moving out the deployment
-// error checking from it's Write method.
-type deploymentWriter struct {
-	w io.Writer
-}
-
-// Write the buffer out to logger, return an error when the string
-// `----------deployment-error----------` is found on the buffer.
-func (tw *deploymentWriter) Write(p []byte) (n int, err error) {
-	s := strings.Replace(string(p), deploymentErrorMark, "", -1)
-	s = strings.Replace(s, deploymentSuccessMark, "", -1)
-	log.Info(strings.Trim(fmt.Sprintf("%s", s), "\n"))
-	if strings.Contains(string(p), deploymentErrorMark) {
-		return len(p), errors.New("Deploy failed")
-	}
-	return len(p), nil
-}
-
-func createDeploy(appName, teamName, description, appFolder string) error {
-	clusterName, err := getCurrentClusterName()
-	if err != nil {
-		log.Fatalf("You have to select a cluster first, check the config help: teresa config")
-	}
-
-	tc := NewTeresa()
-	log.Infof("Getting app info from cluster %s", clusterName)
-	a := tc.GetAppInfoOld(teamName, appName)
-	// create and get the archive
-	log.Infof("Generating tarball of %s", appFolder)
-	tar, err := createTempArchiveToUpload(appName, teamName, appFolder)
-	if err != nil {
-		log.Fatalf("error creating the archive. %s", err)
-	}
-	file, err := os.Open(tar)
-	if err != nil {
-		log.Fatalf("error getting the archive to upload. %s", err)
-	}
-	defer file.Close()
-
-	log.Infof("Deploying application to cluster `%s`", clusterName)
-
-	writer := &deploymentWriter{w: os.Stdout}
-	_, err = tc.CreateDeploy(a.TeamID, a.AppID, description, file, writer)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-	return nil
-}
+// // Writer to be used on deployment, as Write() is very specific and
+// // should be implemented some other way -- moving out the deployment
+// // error checking from it's Write method.
+// type deploymentWriter struct {
+// 	w io.Writer
+// }
+//
+// // Write the buffer out to logger, return an error when the string
+// // `----------deployment-error----------` is found on the buffer.
+// func (tw *deploymentWriter) Write(p []byte) (n int, err error) {
+// 	s := strings.Replace(string(p), deploymentErrorMark, "", -1)
+// 	s = strings.Replace(s, deploymentSuccessMark, "", -1)
+// 	// log.Info(strings.Trim(fmt.Sprintf("%s", s), "\n"))
+// 	if strings.Contains(string(p), deploymentErrorMark) {
+// 		return len(p), errors.New("Deploy failed")
+// 	}
+// 	return len(p), nil
+// }
 
 // create a temporary archive file of the app to deploy and return the path of this file
-func createTempArchiveToUpload(app, team, source string) (path string, err error) {
+func createTempArchiveToUpload(appName, source string) (path *string, err error) {
 	id := uuid.NewV4()
 	source, err = filepath.Abs(source)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	path = filepath.Join(archiveTempFolder, fmt.Sprintf("%s_%s_%s.tar.gz", team, app, id))
-	if err = createArchive(source, path); err != nil {
-		return "", err
+	p := filepath.Join("/tmp", fmt.Sprintf("%s_%s.tar.gz", appName, id))
+	if err = createArchive(source, p); err != nil {
+		return nil, err
 	}
-	return
+	return &p, nil
 }
 
 // create an archive of the source folder
-func createArchive(source string, target string) error {
-	log.WithField("dir", source).Debug("Creating archive")
+func createArchive(source, target string) error {
 	dir, err := os.Stat(source)
 	if err != nil {
-		log.WithError(err).WithField("dir", source).Error("Dir not found to create an archive")
-		return err
+		return fmt.Errorf("Dir not found to create an archive. %s", err)
 	} else if !dir.IsDir() {
-		log.WithField("dir", source).Error("Path to create the app archive isn't a directory")
 		return errors.New("Path to create the app archive isn't a directory")
 	}
 	tar := new(archivex.TarFile)
@@ -125,9 +123,10 @@ func createArchive(source string, target string) error {
 }
 
 func init() {
-	deployCmd.Flags().StringVarP(&appNameFlag, "app", "a", "", "app name [required]")
-	deployCmd.Flags().StringVarP(&teamNameFlag, "team", "t", "", "team name")
-	deployCmd.Flags().StringVarP(&descriptionFlag, "description", "d", "", "deploy description")
-
 	RootCmd.AddCommand(deployCmd)
+
+	deployCmd.Flags().String("app", "", "app name (required)")
+	deployCmd.Flags().String("description", "", "deploy description (required)")
+	deployCmd.Flags().Bool("no-input", false, "deploy app without warning")
+
 }

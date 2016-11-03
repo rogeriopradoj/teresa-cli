@@ -275,8 +275,8 @@ WARNING:
 		for _, e := range evars {
 			fmt.Printf("  %s: %s\n", *e.Key, e.Value)
 		}
-		force, _ := cmd.Flags().GetBool("force")
-		if force == false {
+		noinput, _ := cmd.Flags().GetBool("no-input")
+		if noinput == false {
 			fmt.Print("Are you sure? (yes/NO)? ")
 			// Waiting for the user answer...
 			s, _ := bufio.NewReader(os.Stdin).ReadString('\n')
@@ -349,8 +349,8 @@ You can also provide more than one env var at a time:
 		for _, e := range evars {
 			fmt.Printf("  %s\n", *e.Key)
 		}
-		force, _ := cmd.Flags().GetBool("force")
-		if force == false {
+		noinput, _ := cmd.Flags().GetBool("no-input")
+		if noinput == false {
 			fmt.Print("Are you sure? (yes/NO)? ")
 			// Waiting for the user answer...
 			s, _ := bufio.NewReader(os.Stdin).ReadString('\n')
@@ -393,8 +393,8 @@ func init() {
 	appCreateCmd.Flags().String("memory", "512Mi", "cpu size of the container")
 	// App set env vars
 	appEnvSetCmd.Flags().String("app", "", "app name")
-	appEnvSetCmd.Flags().Bool("force", false, "set env vars without warning")
+	appEnvSetCmd.Flags().Bool("no-input", false, "set env vars without warning")
 	// App unset env vars
 	appEnvUnSetCmd.Flags().String("app", "", "app name")
-	appEnvUnSetCmd.Flags().Bool("force", false, "unset env vars without warning")
+	appEnvUnSetCmd.Flags().Bool("no-input", false, "unset env vars without warning")
 }
