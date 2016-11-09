@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/luizalabs/tcli",
+	"ImportPath": "github.com/luizalabs/teresa-cli",
 	"GoVersion": "go1.6",
 	"GodepVersion": "v62",
 	"Packages": [
@@ -141,39 +141,39 @@
 			"Rev": "333107c714224dd425951d488a51a03a42592fd8"
 		},
 		{
-			"ImportPath": "github.com/luizalabs/tapi/client",
-			"Comment": "v0.1.1-18-g248111e",
-			"Rev": "248111e62e72eccde225e6d87fc2d886d32cb48e"
+			"ImportPath": "github.com/luizalabs/teresa-api/client",
+			"Comment": "v0.1.1-29-g9f2f827",
+			"Rev": "9f2f827963d1b538d6f2cf818516a4e29d0ede30"
 		},
 		{
-			"ImportPath": "github.com/luizalabs/tapi/client/apps",
-			"Comment": "v0.1.1-18-g248111e",
-			"Rev": "248111e62e72eccde225e6d87fc2d886d32cb48e"
+			"ImportPath": "github.com/luizalabs/teresa-api/client/apps",
+			"Comment": "v0.1.1-29-g9f2f827",
+			"Rev": "9f2f827963d1b538d6f2cf818516a4e29d0ede30"
 		},
 		{
-			"ImportPath": "github.com/luizalabs/tapi/client/auth",
-			"Comment": "v0.1.1-18-g248111e",
-			"Rev": "248111e62e72eccde225e6d87fc2d886d32cb48e"
+			"ImportPath": "github.com/luizalabs/teresa-api/client/auth",
+			"Comment": "v0.1.1-29-g9f2f827",
+			"Rev": "9f2f827963d1b538d6f2cf818516a4e29d0ede30"
 		},
 		{
-			"ImportPath": "github.com/luizalabs/tapi/client/deployments",
-			"Comment": "v0.1.1-18-g248111e",
-			"Rev": "248111e62e72eccde225e6d87fc2d886d32cb48e"
+			"ImportPath": "github.com/luizalabs/teresa-api/client/deployments",
+			"Comment": "v0.1.1-29-g9f2f827",
+			"Rev": "9f2f827963d1b538d6f2cf818516a4e29d0ede30"
 		},
 		{
-			"ImportPath": "github.com/luizalabs/tapi/client/teams",
-			"Comment": "v0.1.1-18-g248111e",
-			"Rev": "248111e62e72eccde225e6d87fc2d886d32cb48e"
+			"ImportPath": "github.com/luizalabs/teresa-api/client/teams",
+			"Comment": "v0.1.1-29-g9f2f827",
+			"Rev": "9f2f827963d1b538d6f2cf818516a4e29d0ede30"
 		},
 		{
-			"ImportPath": "github.com/luizalabs/tapi/client/users",
-			"Comment": "v0.1.1-18-g248111e",
-			"Rev": "248111e62e72eccde225e6d87fc2d886d32cb48e"
+			"ImportPath": "github.com/luizalabs/teresa-api/client/users",
+			"Comment": "v0.1.1-29-g9f2f827",
+			"Rev": "9f2f827963d1b538d6f2cf818516a4e29d0ede30"
 		},
 		{
-			"ImportPath": "github.com/luizalabs/tapi/models",
-			"Comment": "v0.1.1-18-g248111e",
-			"Rev": "248111e62e72eccde225e6d87fc2d886d32cb48e"
+			"ImportPath": "github.com/luizalabs/teresa-api/models",
+			"Comment": "v0.1.1-29-g9f2f827",
+			"Rev": "9f2f827963d1b538d6f2cf818516a4e29d0ede30"
 		},
 		{
 			"ImportPath": "github.com/magiconair/properties",

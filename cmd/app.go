@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/luizalabs/tapi/models"
+	"github.com/luizalabs/teresa-api/models"
 	"github.com/olekukonko/tablewriter"
 	_ "github.com/prometheus/common/log"
 	"github.com/spf13/cobra"
