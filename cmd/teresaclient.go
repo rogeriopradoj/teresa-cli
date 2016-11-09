@@ -12,13 +12,13 @@ import (
 	"github.com/go-openapi/runtime/client"
 	httptransport "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
-	apiclient "github.com/luizalabs/tapi/client"
-	"github.com/luizalabs/tapi/client/apps"
-	"github.com/luizalabs/tapi/client/auth"
-	"github.com/luizalabs/tapi/client/deployments"
-	"github.com/luizalabs/tapi/client/teams"
-	"github.com/luizalabs/tapi/client/users"
-	"github.com/luizalabs/tapi/models"
+	apiclient "github.com/luizalabs/teresa-api/client"
+	"github.com/luizalabs/teresa-api/client/apps"
+	"github.com/luizalabs/teresa-api/client/auth"
+	"github.com/luizalabs/teresa-api/client/deployments"
+	"github.com/luizalabs/teresa-api/client/teams"
+	"github.com/luizalabs/teresa-api/client/users"
+	"github.com/luizalabs/teresa-api/models"
 	_ "github.com/prometheus/common/log" // still needed?
 )
 
